@@ -1,0 +1,29 @@
+# Temporário: baixa as fotos do Instagram da clínica (lista em scripts/fotos-instagram.txt)
+# e guarda neste ramo, para escolher as que entram no site. Não publica nada.
+name: Baixar fotos do Instagram
+on:
+  push:
+    branches: [fotos-instagram]
+    paths: [scripts/fotos-instagram.txt, .github/workflows/baixar-fotos.yml]
+permissions:
+  contents: write
+jobs:
+  baixar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Baixar
+        run: |
+          mkdir -p fotos-originais
+          while read -r nome url; do
+            [ -z "$nome" ] && continue
+            curl -fsSL --retry 2 -A "Mozilla/5.0" -o "fotos-originais/$nome.jpg" "$url" && echo "ok $nome" || echo "falhou $nome"
+          done < scripts/fotos-instagram.txt
+          ls -la fotos-originais
+      - name: Guardar no ramo
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add fotos-originais
+          git commit -m "Fotos do Instagram da clínica (originais)" || echo "nada novo"
+          git push
