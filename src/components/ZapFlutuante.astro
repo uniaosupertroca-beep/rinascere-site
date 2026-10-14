@@ -42,6 +42,10 @@ import Icone from "./Icone.astro";
     @media (prefers-reduced-motion: no-preference) {
       .zap-flutuante {
         animation: chega linear both;
+      }
+      /* Em regra separada (e mais específica): o minificador junta tudo num "animation" só,
+         e o navegador descarta o shorthand com a linha do tempo dentro. */
+      a.zap-flutuante {
         animation-timeline: scroll(root);
         animation-range: 0 90vh;
       }
