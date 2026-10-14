@@ -1,0 +1,115 @@
+---
+// Nome e registro no conselho da responsável técnica: obrigatórios na publicidade do biomédico.
+// Enquanto a clínica não informar, o site mostra o espaço marcado "a preencher".
+import { clinica } from "../data/clinica.ts";
+import Monograma from "./Monograma.astro";
+
+const r = clinica.responsavel;
+---
+
+<section class="secao linho" id="responsavel" aria-labelledby="t-responsavel">
+  <div class="envolve grade">
+    <figure class="retrato">
+      {
+        r.foto ? (
+          <img src={r.foto} alt={r.nome ? `${r.nome}, responsável técnica da Rinascere` : "Responsável técnica da Rinascere"} width="800" height="1000" loading="lazy" decoding="async" />
+        ) : (
+          <div class="sem-foto">
+            <Monograma tamanho={72} />
+            <span class="preencher">Foto da responsável técnica</span>
+          </div>
+        )
+      }
+    </figure>
+    <div class="texto">
+      <p class="chapeu">Responsável técnica</p>
+      <h2 class="titulo" id="t-responsavel">
+        {r.nome ? <strong>{r.nome}</strong> : <span class="preencher">Nome da biomédica</span>}
+      </h2>
+      <p class="registro">
+        Biomédica esteta · {r.registro ?? <span class="preencher">CRBM nº</span>}
+      </p>
+      <p class="sobre">
+        {
+          r.sobre ?? (
+            <span class="preencher">Duas ou três frases sobre a formação, a experiência e o jeito de atender da profissional.</span>
+          )
+        }
+      </p>
+      <p class="nota">
+        Os procedimentos são feitos com finalidade estética, por profissional habilitada em Biomedicina Estética, seguindo as normas do
+        Conselho Federal de Biomedicina.
+      </p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .grade {
+    display: grid;
+    gap: 48px;
+    align-items: center;
+  }
+  @media (min-width: 900px) {
+    .grade {
+      grid-template-columns: 0.8fr 1.2fr;
+      gap: 88px;
+    }
+  }
+  .retrato {
+    position: relative;
+    max-width: 440px;
+    width: calc(100% - 14px);
+  }
+  .retrato::before {
+    content: "";
+    position: absolute;
+    inset: 14px -14px -14px 14px;
+    border: 1px solid var(--bronze);
+    border-radius: var(--raio);
+    z-index: 0;
+  }
+  .retrato img,
+  .sem-foto {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    border-radius: var(--raio);
+  }
+  .sem-foto {
+    display: grid;
+    place-content: center;
+    justify-items: center;
+    gap: 22px;
+    background: radial-gradient(80% 70% at 50% 30%, var(--grafite-3), var(--grafite));
+    color: var(--bronze);
+    padding: 24px;
+    text-align: center;
+  }
+  .sem-foto .preencher {
+    font-size: 14px;
+    color: var(--bronze-claro);
+  }
+  .registro {
+    margin-top: 16px;
+    font-size: 15px;
+    font-weight: 650;
+    letter-spacing: 0.06em;
+    color: var(--bronze-texto);
+  }
+  .sobre {
+    margin-top: 24px;
+    max-width: 36em;
+    font-size: 18.5px;
+  }
+  .nota {
+    margin-top: 28px;
+    padding-top: 22px;
+    border-top: 1px solid var(--linha);
+    max-width: 38em;
+    font-size: 14.5px;
+    color: var(--tinta-2);
+  }
+</style>

@@ -1,0 +1,136 @@
+---
+// Respostas honestas: sem promessa de resultado, sem preço e sem "risco zero"
+// (regras do Código de Ética do Profissional Biomédico e do Código de Defesa do Consumidor).
+import { linkWhatsapp } from "../data/clinica.ts";
+import Icone from "./Icone.astro";
+
+const perguntas = [
+  {
+    p: "É o mesmo que aumento peniano?",
+    r: "É assim que muita gente procura. O procedimento feito aqui é estético: trabalha volume e contorno com ácido hialurônico. Mudanças de comprimento ou de função sexual são da área médica, com um urologista.",
+  },
+  {
+    p: "O procedimento é seguro?",
+    r: "É minimamente invasivo, feito no consultório, com técnica estéril e ácido hialurônico com registro na Anvisa. Como todo procedimento injetável, tem riscos, como inchaço, hematoma ou nódulos. Eles são explicados na avaliação e no termo de consentimento, junto com os cuidados para evitá-los.",
+  },
+  {
+    p: "Dói?",
+    r: "A aplicação é feita com anestesia local, para deixar o procedimento mais confortável. Na avaliação você tira todas as dúvidas sobre como é cada etapa.",
+  },
+  {
+    p: "É cirurgia?",
+    r: "Não. É feito no consultório, sem cortes, sem prótese e sem internação.",
+  },
+  {
+    p: "Interfere na ereção?",
+    r: "O preenchimento tem finalidade estética e é aplicado sob a pele, sem atuar na função erétil. Se você tem alguma queixa de ereção, o caminho é procurar um médico urologista.",
+  },
+  {
+    p: "O resultado é definitivo?",
+    r: "Não. O ácido hialurônico é absorvido pelo corpo aos poucos. A manutenção é combinada na consulta, de acordo com o seu caso.",
+  },
+  {
+    p: "Quando posso voltar à rotina?",
+    r: "O trabalho e as atividades leves podem ser retomados conforme a orientação da consulta. Academia, só depois de 24 horas; esforço intenso nas pernas, depois de 72 horas.",
+  },
+  {
+    p: "Meu atendimento fica em sigilo?",
+    r: "Sim. O atendimento é com hora marcada, a conversa é reservada e suas informações de saúde não são compartilhadas com ninguém.",
+  },
+  {
+    p: "Quanto custa?",
+    r: "O valor depende do que for definido na avaliação para o seu caso. Chame no WhatsApp para agendar e tirar essa dúvida diretamente com a clínica.",
+  },
+];
+---
+
+<section class="secao linho" id="duvidas" aria-labelledby="t-duvidas">
+  <div class="envolve grade">
+    <div class="lado">
+      <p class="chapeu">Dúvidas</p>
+      <h2 class="titulo" id="t-duvidas">O que os homens <strong>mais perguntam.</strong></h2>
+      <p class="abre">Ficou alguma dúvida? Pergunte no WhatsApp. A resposta vem da própria clínica, com discrição.</p>
+      <a class="botao linha" href={linkWhatsapp()} target="_blank" rel="noopener">
+        <Icone nome="whatsapp" tamanho={18} />
+        Perguntar no WhatsApp
+      </a>
+    </div>
+    <div class="lista">
+      {
+        perguntas.map(({ p, r }) => (
+          <details>
+            <summary>
+              <h3>{p}</h3>
+              <Icone nome="mais" tamanho={22} />
+            </summary>
+            <p>{r}</p>
+          </details>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .grade {
+    display: grid;
+    gap: 48px;
+    align-items: start;
+  }
+  @media (min-width: 960px) {
+    .grade {
+      grid-template-columns: 0.85fr 1.15fr;
+      gap: 88px;
+    }
+    .lado {
+      position: sticky;
+      top: 32px;
+    }
+  }
+  .lado .botao {
+    margin-top: 32px;
+  }
+  .lista {
+    border-top: 1px solid var(--linha);
+  }
+  details {
+    border-bottom: 1px solid var(--linha);
+  }
+  summary {
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    padding: 24px 0;
+  }
+  summary::-webkit-details-marker {
+    display: none;
+  }
+  summary h3 {
+    font-size: 18.5px;
+    font-weight: 600;
+  }
+  summary :global(svg) {
+    flex: none;
+    color: var(--bronze-texto);
+    transition: rotate 0.25s ease;
+  }
+  details[open] summary :global(svg) {
+    rotate: 45deg;
+  }
+  summary:hover h3 {
+    color: var(--bronze-texto);
+  }
+  details p {
+    padding: 0 40px 26px 0;
+    color: var(--tinta-2);
+    max-width: 40em;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    summary :global(svg) {
+      transition: none;
+    }
+  }
+</style>

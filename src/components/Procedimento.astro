@@ -1,0 +1,111 @@
+---
+const resumo = [
+  { termo: "Técnica", texto: "Preenchimento com ácido hialurônico" },
+  { termo: "Anestesia", texto: "Local" },
+  { termo: "Onde é feito", texto: "No consultório, sem internação" },
+  { termo: "Duração", texto: "Temporária: o ácido hialurônico é absorvido aos poucos, e a manutenção é combinada com você" },
+  { termo: "Volta à rotina", texto: "Academia depois de 24 horas; esforço intenso nas pernas depois de 72 horas" },
+];
+---
+
+<section class="secao linho" id="procedimento" aria-labelledby="t-procedimento">
+  <div class="envolve grade">
+    <div class="texto">
+      <p class="chapeu">O procedimento</p>
+      <h2 class="titulo" id="t-procedimento">Harmonização íntima, <strong>sem cirurgia.</strong></h2>
+      <div class="corpo">
+        <p class="destaque">
+          É um preenchimento estético feito com ácido hialurônico, uma substância semelhante à que o próprio corpo produz e usada há anos na
+          estética. O objetivo é trabalhar volume e contorno, respeitando a anatomia de cada homem.
+        </p>
+        <p>
+          Não envolve cortes nem prótese. A aplicação é feita no consultório, com anestesia local. Por ser um procedimento estético, ele não
+          tem como objetivo mudar a função sexual: queixas de ereção ou de comprimento são da área médica, com um urologista.
+        </p>
+        <p>
+          Todo caso começa por uma avaliação. É nela que a gente entende o que você espera, conhece seu histórico de saúde e diz, com franqueza,
+          o que é possível para você.
+        </p>
+      </div>
+    </div>
+    <div class="resumo">
+      <h3 id="t-resumo">Em resumo</h3>
+      <dl>
+        {
+          resumo.map((r) => (
+            <div>
+              <dt>{r.termo}</dt>
+              <dd>{r.texto}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+  </div>
+</section>
+
+<style>
+  .grade {
+    display: grid;
+    gap: 56px;
+    align-items: start;
+  }
+  @media (min-width: 960px) {
+    .grade {
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 88px;
+    }
+  }
+  .corpo {
+    margin-top: 32px;
+    display: grid;
+    gap: 18px;
+    max-width: 38em;
+    color: var(--tinta-2);
+  }
+  .corpo .destaque {
+    font-size: 20px;
+    line-height: 1.55;
+    color: var(--tinta);
+  }
+  .resumo {
+    background: var(--branco);
+    border: 1px solid var(--linha);
+    border-top: 2px solid var(--bronze);
+    border-radius: var(--raio);
+    padding: clamp(26px, 3.4vw, 40px);
+  }
+  @media (min-width: 960px) {
+    .resumo {
+      position: sticky;
+      top: 32px;
+      margin-top: 64px;
+    }
+  }
+  h3 {
+    font-size: 21px;
+    font-weight: 600;
+  }
+  dl {
+    margin-top: 14px;
+  }
+  dl div {
+    display: grid;
+    gap: 4px;
+    padding: 16px 0;
+    border-top: 1px solid var(--linha);
+  }
+  dl div:first-child {
+    border-top: 0;
+  }
+  dt {
+    font-size: 12px;
+    font-weight: 650;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--bronze-texto);
+  }
+  dd {
+    font-size: 16.5px;
+  }
+</style>

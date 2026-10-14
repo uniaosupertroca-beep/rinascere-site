@@ -1,0 +1,98 @@
+---
+// Os passos são uma sequência de verdade, por isso levam número.
+const etapas = [
+  {
+    titulo: "Você chama no WhatsApp",
+    texto: "Tire suas dúvidas e marque a avaliação. Sem formulário e sem cadastro no site.",
+  },
+  {
+    titulo: "Avaliação individual",
+    texto: "Uma conversa reservada sobre o que você espera, seu histórico de saúde e o que é possível no seu caso.",
+  },
+  {
+    titulo: "Aplicação no consultório",
+    texto: "Com termo de consentimento assinado, anestesia local e ácido hialurônico com registro na Anvisa.",
+  },
+  {
+    titulo: "Acompanhamento",
+    texto: "Orientações de cuidados para casa e retorno combinado para ver como você está.",
+  },
+];
+---
+
+<section class="secao branca" id="como-funciona" aria-labelledby="t-etapas">
+  <div class="envolve">
+    <p class="chapeu">Como funciona</p>
+    <h2 class="titulo" id="t-etapas">Do primeiro contato <strong>ao retorno.</strong></h2>
+    <ol class="etapas">
+      {
+        etapas.map((e, i) => (
+          <li>
+            <span class="numero">{String(i + 1).padStart(2, "0")}</span>
+            <h3>{e.titulo}</h3>
+            <p>{e.texto}</p>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<style>
+  .etapas {
+    list-style: none;
+    padding: 0;
+    margin-top: 64px;
+    display: grid;
+    gap: 40px;
+  }
+  @media (min-width: 720px) {
+    .etapas {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 48px 40px;
+    }
+  }
+  @media (min-width: 1080px) {
+    .etapas {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 32px;
+    }
+  }
+  li {
+    position: relative;
+  }
+  .numero {
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 1px solid var(--bronze);
+    font-size: 14px;
+    font-weight: 650;
+    color: var(--bronze-texto);
+    background: var(--branco);
+    position: relative;
+    z-index: 1;
+  }
+  @media (min-width: 1080px) {
+    li:not(:last-child)::after {
+      content: "";
+      position: absolute;
+      top: 24px;
+      left: 60px;
+      right: -20px;
+      height: 1px;
+      background: var(--linha);
+    }
+  }
+  h3 {
+    margin-top: 22px;
+    font-size: 19px;
+  }
+  p {
+    margin-top: 10px;
+    color: var(--tinta-2);
+    font-size: 16px;
+  }
+</style>

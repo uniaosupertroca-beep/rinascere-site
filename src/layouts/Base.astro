@@ -1,0 +1,74 @@
+---
+import "@fontsource-variable/raleway";
+import fonteRaleway from "@fontsource-variable/raleway/files/raleway-latin-wght-normal.woff2?url";
+import "../styles/global.css";
+import { clinica, linkWhatsapp } from "../data/clinica.ts";
+
+interface Props {
+  titulo: string;
+  descricao: string;
+  /** Página fora do Google (ex.: 404). */
+  semIndice?: boolean;
+  /** Dados estruturados (schema.org) só na página principal. */
+  comDadosEstruturados?: boolean;
+}
+
+const { titulo, descricao, semIndice = false, comDadosEstruturados = false } = Astro.props;
+const canonico = new URL(Astro.url.pathname, clinica.endereco).href;
+const imagem = new URL("/og.png", clinica.endereco).href;
+
+const dados = {
+  "@context": "https://schema.org",
+  "@type": "HealthAndBeautyBusiness",
+  name: clinica.nome,
+  url: clinica.endereco,
+  image: imagem,
+  description: descricao,
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: clinica.rua,
+    addressLocality: clinica.cidade,
+    addressRegion: clinica.uf,
+    postalCode: clinica.cep,
+    addressCountry: "BR",
+  },
+  areaServed: "Vale do Itajaí",
+  sameAs: Object.values(clinica.redes),
+  ...(clinica.whatsapp.numero ? { telephone: `+${clinica.whatsapp.numero}` } : {}),
+  potentialAction: { "@type": "ReserveAction", target: linkWhatsapp() },
+};
+---
+
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{titulo}</title>
+    <meta name="description" content={descricao} />
+    {semIndice ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonico} />}
+    <meta name="theme-color" content="#1c1a18" />
+    <meta name="format-detection" content="telephone=no" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="preload" href={fonteRaleway} as="font" type="font/woff2" crossorigin />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:site_name" content={clinica.nome} />
+    <meta property="og:title" content={titulo} />
+    <meta property="og:description" content={descricao} />
+    <meta property="og:url" content={canonico} />
+    <meta property="og:image" content={imagem} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Rinascere Aesthetics, harmonização íntima masculina em Itajaí (SC)" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    {comDadosEstruturados && <script type="application/ld+json" set:html={JSON.stringify(dados)} />}
+  </head>
+  <body>
+    <a class="pular" href="#conteudo">Ir para o conteúdo</a>
+    <slot />
+  </body>
+</html>

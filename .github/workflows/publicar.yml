@@ -1,0 +1,76 @@
+# Gera, confere e publica o site no Cloudflare Pages a cada envio para a main.
+# Em pull request só gera e confere (não publica).
+#
+# Segredos do repositório (Settings → Secrets and variables → Actions):
+#   CLOUDFLARE_API_TOKEN   token com a permissão Conta → Cloudflare Pages → Editar
+#   CLOUDFLARE_ACCOUNT_ID  id da conta do Cloudflare
+# Sem o token, o site é gerado e conferido, mas não é publicado (aparece um aviso).
+name: Publicar
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: publicar-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  PROJETO: rinascere
+  WRANGLER: wrangler@4.149.0
+
+jobs:
+  site:
+    runs-on: ubuntu-latest
+    env:
+      TEM_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN != '' }}
+      PUBLICAR: ${{ github.event_name != 'pull_request' }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Gerar e conferir o site
+        run: npm run build
+
+      - name: Aviso de publicação pendente
+        if: env.PUBLICAR == 'true' && env.TEM_TOKEN != 'true'
+        run: echo "::warning::Site gerado e conferido, mas NÃO publicado. Falta o segredo CLOUDFLARE_API_TOKEN (veja o README)."
+
+      - name: Criar o projeto no Cloudflare Pages (só na primeira vez)
+        if: env.PUBLICAR == 'true' && env.TEM_TOKEN == 'true'
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          if ! saida=$(npx --yes "$WRANGLER" pages project create "$PROJETO" --production-branch main 2>&1); then
+            echo "$saida"
+            echo "$saida" | grep -qiE "already exist" || exit 1
+            echo "O projeto $PROJETO já existe."
+          fi
+
+      - name: Publicar
+        if: env.PUBLICAR == 'true' && env.TEM_TOKEN == 'true'
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          npx --yes "$WRANGLER" pages deploy dist --project-name "$PROJETO" --branch main --commit-dirty=true
+          {
+            echo "## Site publicado"
+            echo
+            echo "Endereços do projeto no Cloudflare Pages:"
+            echo '```'
+            npx --yes "$WRANGLER" pages project list
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"

@@ -1,0 +1,45 @@
+---
+// Assinatura da clínica em texto, no desenho do logo atual (Rinascere fino + "aesthetics" espaçado).
+// Quando a clínica mandar o logo em SVG, ele pode entrar aqui no lugar do texto.
+interface Props {
+  tom?: "claro" | "escuro";
+}
+const { tom = "claro" } = Astro.props;
+---
+
+<span class:list={["marca", tom]}>
+  <span class="nome">Rinascere</span>
+  <span class="sub">aesthetics</span>
+</span>
+
+<style>
+  .marca {
+    display: inline-grid;
+    justify-items: end;
+    align-content: start;
+    line-height: 1;
+  }
+  .nome {
+    font-size: 25px;
+    font-weight: 300;
+    letter-spacing: 0.01em;
+  }
+  .sub {
+    margin-top: 3px;
+    font-size: 9.5px;
+    font-weight: 600;
+    letter-spacing: 0.42em;
+    margin-right: -0.42em;
+    text-transform: lowercase;
+    color: var(--bronze-texto);
+  }
+  .claro .nome {
+    color: var(--claro);
+  }
+  .claro .sub {
+    color: var(--bronze);
+  }
+  .escuro .nome {
+    color: var(--tinta);
+  }
+</style>

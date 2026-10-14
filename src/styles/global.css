@@ -1,0 +1,269 @@
+/* Identidade Rinascere: grafite, bronze e linho, Raleway (a fonte da marca).
+   Linguagem premium editorial: títulos finos com uma parte em peso forte, muito respiro,
+   topo escuro e seções claras. Sem JavaScript: movimento só em CSS e só sem "reduzir movimento". */
+
+:root {
+  --grafite: #1c1a18;
+  --grafite-2: #26231f;
+  --grafite-3: #34302b;
+  --bronze: #b8956a;
+  --bronze-claro: #d9c3a3;
+  --bronze-texto: #7a5c34;
+  --linho: #f2ece2;
+  --papel: #faf7f2;
+  --branco: #fffdf9;
+  --tinta: #1c1a18;
+  --tinta-2: #5e5850;
+  --linha: #ded5c8;
+  --claro: #efe8dd;
+  --claro-2: #c9c0b3;
+  --zap: #157f4b;
+  --zap-escuro: #106b3e;
+
+  --fonte: "Raleway Variable", "Raleway", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --largura: 1200px;
+  --respiro: clamp(80px, 11vw, 144px);
+  --raio: 14px;
+
+  color-scheme: light;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+  scroll-padding-top: 88px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  margin: 0;
+  font-family: var(--fonte);
+  font-size: 17px;
+  font-weight: 450;
+  line-height: 1.65;
+  font-variant-numeric: lining-nums;
+  color: var(--tinta);
+  background: var(--papel);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+}
+
+h1,
+h2,
+h3,
+h4,
+p,
+ul,
+ol,
+dl,
+dd,
+figure,
+blockquote {
+  margin: 0;
+}
+
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+  font-weight: 600;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--bronze);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.envolve {
+  width: min(100% - 40px, var(--largura));
+  margin-inline: auto;
+}
+
+.pular {
+  position: absolute;
+  left: 16px;
+  top: -60px;
+  z-index: 100;
+  background: var(--branco);
+  color: var(--tinta);
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+.pular:focus {
+  top: 16px;
+}
+
+/* Seções: o fundo diz em que "sala" a pessoa está. */
+.secao {
+  padding-block: var(--respiro);
+}
+
+.secao.escura {
+  background: var(--grafite);
+  color: var(--claro);
+}
+
+.secao.linho {
+  background: var(--linho);
+}
+
+.secao.branca {
+  background: var(--branco);
+}
+
+/* Chapéu da seção: traço de bronze + nome curto. */
+.chapeu {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 12px;
+  font-weight: 650;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--bronze-texto);
+}
+
+.chapeu::before {
+  content: "";
+  width: 32px;
+  height: 1px;
+  background: currentColor;
+}
+
+.escura .chapeu {
+  color: var(--bronze);
+}
+
+/* Títulos: parte fina + parte forte, a assinatura visual do site. */
+.titulo {
+  margin-top: 20px;
+  font-size: clamp(34px, 5vw, 58px);
+  line-height: 1.08;
+  font-weight: 250;
+  letter-spacing: -0.015em;
+}
+
+.titulo strong {
+  font-weight: 650;
+  color: var(--bronze-texto);
+}
+
+.escura .titulo strong {
+  color: var(--bronze);
+}
+
+.abre {
+  margin-top: 22px;
+  max-width: 36em;
+  font-size: 18.5px;
+  color: var(--tinta-2);
+}
+
+.escura .abre {
+  color: var(--claro-2);
+}
+
+/* Botões */
+.botao {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 52px;
+  padding: 0 26px;
+  border-radius: 999px;
+  font: inherit;
+  font-size: 15.5px;
+  font-weight: 650;
+  letter-spacing: 0.01em;
+  text-decoration: none;
+  border: 1px solid transparent;
+  transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+}
+
+.botao.zap {
+  background: var(--zap);
+  color: #fff;
+}
+
+.botao.zap:hover {
+  background: var(--zap-escuro);
+}
+
+.botao.bronze {
+  background: var(--bronze);
+  color: var(--grafite);
+}
+
+.botao.bronze:hover {
+  background: var(--bronze-claro);
+}
+
+.botao.linha {
+  border-color: var(--linha);
+  color: var(--tinta);
+  background: transparent;
+}
+
+.botao.linha:hover {
+  border-color: var(--bronze-texto);
+}
+
+.escura .botao.linha {
+  border-color: color-mix(in oklab, var(--claro) 28%, transparent);
+  color: var(--claro);
+}
+
+.escura .botao.linha:hover {
+  border-color: var(--bronze);
+}
+
+.acoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+/* Marcação visível de conteúdo que a clínica ainda vai mandar. */
+.preencher {
+  display: inline-block;
+  padding: 1px 8px;
+  border: 1px dashed var(--bronze);
+  border-radius: 6px;
+  color: var(--bronze-texto);
+  font-weight: 600;
+  background: color-mix(in oklab, var(--bronze) 10%, transparent);
+}
+
+.escura .preencher {
+  color: var(--bronze-claro);
+}

@@ -1,0 +1,38 @@
+---
+import Abertura from "../components/Abertura.astro";
+import Chamada from "../components/Chamada.astro";
+import Cuidados from "../components/Cuidados.astro";
+import Duvidas from "../components/Duvidas.astro";
+import Etapas from "../components/Etapas.astro";
+import Faixa from "../components/Faixa.astro";
+import Local from "../components/Local.astro";
+import Pilares from "../components/Pilares.astro";
+import Procedimento from "../components/Procedimento.astro";
+import Responsavel from "../components/Responsavel.astro";
+import Rodape from "../components/Rodape.astro";
+import Topo from "../components/Topo.astro";
+import ZapFlutuante from "../components/ZapFlutuante.astro";
+import Base from "../layouts/Base.astro";
+---
+
+<Base
+  titulo="Harmonização íntima masculina em Itajaí (SC) | Rinascere Aesthetics"
+  descricao="Harmonização íntima masculina com ácido hialurônico no centro de Itajaí (SC). Avaliação individual, sem cirurgia e com sigilo do primeiro contato ao retorno. Agende pelo WhatsApp."
+  comDadosEstruturados
+>
+  <Topo />
+  <main id="conteudo">
+    <Abertura />
+    <Faixa />
+    <Procedimento />
+    <Pilares />
+    <Etapas />
+    <Responsavel />
+    <Cuidados />
+    <Duvidas />
+    <Local />
+    <Chamada />
+    <ZapFlutuante />
+  </main>
+  <Rodape />
+</Base>

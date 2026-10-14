@@ -1,0 +1,89 @@
+---
+import { linkWhatsapp } from "../data/clinica.ts";
+import Icone from "./Icone.astro";
+import Marca from "./Marca.astro";
+
+interface Props {
+  /** Nas páginas internas os links do menu voltam para a página principal. */
+  interna?: boolean;
+}
+const { interna = false } = Astro.props;
+const raiz = interna ? "/" : "";
+
+const menu = [
+  { href: "#procedimento", texto: "O procedimento" },
+  { href: "#como-funciona", texto: "Como funciona" },
+  { href: "#duvidas", texto: "Dúvidas" },
+  { href: "#onde-estamos", texto: "Onde estamos" },
+];
+---
+
+<header class="topo">
+  <div class="envolve barra">
+    <a class="inicio" href={interna ? "/" : "#conteudo"} aria-label="Rinascere Aesthetics, início da página"><Marca /></a>
+    <nav aria-label="Seções">
+      <ul>
+        {menu.map((item) => <li><a href={raiz + item.href}>{item.texto}</a></li>)}
+      </ul>
+    </nav>
+    <a class="botao bronze agendar" href={linkWhatsapp()} target="_blank" rel="noopener">
+      <Icone nome="whatsapp" tamanho={18} />
+      Agendar avaliação
+    </a>
+  </div>
+</header>
+
+<style>
+  .topo {
+    position: absolute;
+    inset: 0 0 auto;
+    z-index: 20;
+    color: var(--claro);
+  }
+  .barra {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding-block: 22px;
+  }
+  .inicio {
+    text-decoration: none;
+    flex: none;
+  }
+  nav {
+    display: none;
+  }
+  nav ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    gap: 34px;
+  }
+  nav a {
+    text-decoration: none;
+    font-size: 14.5px;
+    font-weight: 550;
+    color: var(--claro-2);
+    transition: color 0.2s;
+  }
+  nav a:hover {
+    color: var(--claro);
+  }
+  .agendar {
+    min-height: 44px;
+    padding: 0 18px;
+    font-size: 14px;
+  }
+  @media (min-width: 980px) {
+    nav {
+      display: block;
+    }
+  }
+  @media (max-width: 420px) {
+    .agendar {
+      padding: 0 14px;
+      font-size: 13.5px;
+    }
+  }
+</style>

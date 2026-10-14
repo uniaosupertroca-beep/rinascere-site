@@ -1,0 +1,110 @@
+---
+import { clinica, enderecoCompleto, linkWhatsapp } from "../data/clinica.ts";
+import Marca from "./Marca.astro";
+
+const r = clinica.responsavel;
+const ano = new Date().getFullYear();
+---
+
+<footer class="rodape">
+  <div class="envolve">
+    <div class="assinatura">
+      <Marca />
+      <p>Harmonização íntima masculina em {clinica.cidade} ({clinica.uf}), com avaliação individual e sigilo.</p>
+    </div>
+    <div>
+      <h2>Contato</h2>
+      <ul>
+        <li><a href={linkWhatsapp()} target="_blank" rel="noopener">WhatsApp</a></li>
+        <li><a href={clinica.redes.instagram} target="_blank" rel="noopener">Instagram</a></li>
+        <li><a href={clinica.redes.facebook} target="_blank" rel="noopener">Facebook</a></li>
+        <li><a href={clinica.redes.youtube} target="_blank" rel="noopener">YouTube</a></li>
+      </ul>
+    </div>
+    <div>
+      <h2>Clínica</h2>
+      <ul>
+        <li>{enderecoCompleto}</li>
+        <li>CNPJ {clinica.cnpj}</li>
+        <li>
+          Responsável técnica: {r.nome ?? <span class="preencher">nome</span>}, biomédica esteta, {
+            r.registro ?? <span class="preencher">CRBM nº</span>
+          }
+        </li>
+      </ul>
+    </div>
+    <div class="fim">
+      <span>© {ano} {clinica.nome}. Todos os direitos reservados.</span>
+      <a href="/privacidade">Privacidade</a>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .rodape {
+    background: #151311;
+    color: var(--claro-2);
+    padding-block: 72px 112px;
+    font-size: 15px;
+  }
+  @media (min-width: 720px) {
+    .rodape {
+      padding-block: 80px 40px;
+    }
+  }
+  .envolve {
+    display: grid;
+    gap: 40px;
+  }
+  @media (min-width: 960px) {
+    .envolve {
+      grid-template-columns: 1.3fr 0.7fr 1.2fr;
+      gap: 56px;
+    }
+  }
+  .assinatura {
+    display: grid;
+    align-content: start;
+    gap: 20px;
+    justify-items: start;
+  }
+  .assinatura p {
+    max-width: 24em;
+  }
+  h2 {
+    margin-bottom: 16px;
+    font-size: 12px;
+    font-weight: 650;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--bronze);
+  }
+  ul {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: 10px;
+  }
+  a {
+    color: var(--claro);
+    text-decoration: none;
+  }
+  a:hover {
+    color: var(--bronze-claro);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .preencher {
+    color: var(--bronze-claro);
+  }
+  .fim {
+    grid-column: 1 / -1;
+    padding-top: 24px;
+    border-top: 1px solid color-mix(in oklab, var(--claro) 12%, transparent);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 8px 24px;
+    font-size: 13.5px;
+  }
+</style>

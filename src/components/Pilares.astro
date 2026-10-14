@@ -1,0 +1,85 @@
+---
+import Icone from "./Icone.astro";
+
+const pilares = [
+  {
+    icone: "cadeado",
+    titulo: "Sigilo",
+    texto: "Atendimento com hora marcada e conversa reservada. O que você conta para a gente, do primeiro contato ao retorno, fica entre nós.",
+  },
+  {
+    icone: "avaliacao",
+    titulo: "Avaliação individual",
+    texto: "Antes de qualquer aplicação, uma consulta para entender suas expectativas, seu histórico de saúde e o que faz sentido no seu caso.",
+  },
+  {
+    icone: "conversa",
+    titulo: "Acompanhamento",
+    texto: "Você sai com as orientações para os dias seguintes e tem um canal direto com a clínica pelo WhatsApp durante a recuperação.",
+  },
+] as const;
+---
+
+<section class="secao escura" aria-labelledby="t-pilares">
+  <div class="envolve">
+    <p class="chapeu">Por que a Rinascere</p>
+    <h2 class="titulo" id="t-pilares">Discrição faz parte <strong>do atendimento.</strong></h2>
+    <ul class="pilares">
+      {
+        pilares.map((p) => (
+          <li>
+            <span class="icone">
+              <Icone nome={p.icone} tamanho={24} />
+            </span>
+            <h3>{p.titulo}</h3>
+            <p>{p.texto}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .pilares {
+    list-style: none;
+    padding: 0;
+    margin-top: 64px;
+    display: grid;
+    gap: 44px;
+  }
+  @media (min-width: 880px) {
+    .pilares {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0;
+    }
+    .pilares li {
+      padding-inline: 36px;
+      border-left: 1px solid color-mix(in oklab, var(--claro) 12%, transparent);
+    }
+    .pilares li:first-child {
+      padding-left: 0;
+      border-left: 0;
+    }
+  }
+  .icone {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    border: 1px solid color-mix(in oklab, var(--bronze) 45%, transparent);
+    color: var(--bronze);
+  }
+  h3 {
+    margin-top: 24px;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--claro);
+  }
+  p {
+    margin-top: 12px;
+    color: var(--claro-2);
+    max-width: 30em;
+  }
+</style>

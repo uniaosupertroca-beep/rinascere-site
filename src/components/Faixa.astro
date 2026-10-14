@@ -1,0 +1,68 @@
+---
+// Faixa que corre entre o topo e o conteúdo, como na identidade "Alta Performance".
+// É decorativa (repete o que a página já diz), então fica fora da leitura de tela.
+import Monograma from "./Monograma.astro";
+
+const palavras = ["Discrição", "Avaliação individual", "Sem cirurgia", "Anestesia local", "Acompanhamento"];
+const volta = [...palavras, ...palavras];
+---
+
+<div class="faixa" aria-hidden="true">
+  <div class="trilho">
+    {
+      [0, 1].map(() => (
+        <ul>
+          {volta.map((p) => (
+            <li>
+              <span>{p}</span>
+              <Monograma tamanho={16} />
+            </li>
+          ))}
+        </ul>
+      ))
+    }
+  </div>
+</div>
+
+<style>
+  .faixa {
+    background: var(--grafite-2);
+    border-block: 1px solid color-mix(in oklab, var(--claro) 8%, transparent);
+    overflow: hidden;
+    color: var(--bronze);
+  }
+  .trilho {
+    display: flex;
+    width: max-content;
+  }
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+  }
+  li {
+    display: flex;
+    align-items: center;
+    gap: 34px;
+    padding: 16px 0 16px 34px;
+    white-space: nowrap;
+  }
+  span {
+    font-size: 12px;
+    font-weight: 650;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--bronze-claro);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .trilho {
+      animation: corre 60s linear infinite;
+    }
+  }
+  @keyframes corre {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+</style>
