@@ -44,7 +44,7 @@ export const clinica = {
   // Dados publicados pela própria clínica no Instagram (@clinica.rinascere, posts de set/2026).
   responsavel: {
     feminino: true,
-    responsavelTecnico: null,
+    responsavelTecnico: true,
     nome: "Bruna Zaccarias",
     registro: "CRBM 9292",
     sobre:
