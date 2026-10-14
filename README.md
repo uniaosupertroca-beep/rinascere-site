@@ -12,17 +12,17 @@ Site da Rinascere Aesthetics (Itajaí/SC), clínica de harmonização íntima ma
 2. **O procedimento:** o que é, em linguagem honesta, e o quadro "Em resumo".
 3. **Por que a Rinascere:** sigilo, avaliação individual, acompanhamento.
 4. **Como funciona:** os 4 passos, do WhatsApp ao retorno.
-5. **Responsável técnica:** foto, nome e registro no conselho (obrigatórios).
+5. **Responsável técnico(a):** foto, nome e registro no conselho (obrigatórios). O site escreve "biomédica" ou "biomédico" conforme `responsavel.feminino`.
 6. **Cuidados e recuperação:** o que esperar e os sinais para avisar a clínica na hora.
 7. **Dúvidas:** 9 perguntas, incluindo "É o mesmo que aumento peniano?" (é o termo que as pessoas buscam no Google).
 8. **Onde estamos:** endereço, rota no Google Maps e no Waze, redes sociais.
-9. **Chamada final** e rodapé com CNPJ e responsável técnica.
+9. **Chamada final** e rodapé com CNPJ e responsável técnico(a).
 
 O contato é **só pelo WhatsApp**, sem formulário: o site não guarda dado nenhum, o que simplifica a LGPD (veja `/privacidade`).
 
 ## Regras de publicidade (por que o texto é assim)
 
-A responsável técnica é **biomédica**. Pelo CRBM (resposta oficial, dez/2025), o biomédico esteta pode fazer harmonização íntima masculina **só com finalidade estética**. Mudança de comprimento ou de desempenho sexual é competência médica. O Código de Ética do Profissional Biomédico (Res. CFBM 330/2020, art. 11) e o Código de Defesa do Consumidor (art. 37) proíbem promessa de resultado, preço e desconto para captar paciente, e propaganda enganosa.
+Quem responde pela clínica é da **Biomedicina**. Pelo CRBM (resposta oficial, dez/2025), o biomédico esteta pode fazer harmonização íntima masculina **só com finalidade estética**. Mudança de comprimento ou de desempenho sexual é competência médica. O Código de Ética do Profissional Biomédico (Res. CFBM 330/2020, art. 11) e o Código de Defesa do Consumidor (art. 37) proíbem promessa de resultado, preço e desconto para captar paciente, e propaganda enganosa.
 
 Por isso o site **não** tem: "ganho de até 5 cm", "comprimento ereto", "mais prazer", "100% seguro / sem risco", "de R$ 180 por R$ 60", "válido por 10 minutos".
 
@@ -36,13 +36,13 @@ O `npm run build` **barra a publicação** se alguma dessas frases voltar (`scri
 
 Enquanto não chegam, o site mostra espaços marcados "a preencher", e o build lista o que falta.
 
-- [ ] **Nome da responsável técnica** e **registro no CRBM** (ex.: `CRBM-5 nº 12345`). São obrigatórios antes de divulgar o site.
-- [ ] **Foto da responsável técnica**: retrato vertical. Salve em `public/fotos/responsavel.jpg` (cerca de 800×1000 px).
-- [ ] **Texto curto sobre ela**: formação, experiência, jeito de atender.
+- [ ] **Biomédica ou biomédico**, **nome** e **registro no CRBM** (ex.: `CRBM-5 nº 12345`). São obrigatórios antes de divulgar o site.
+- [ ] **Foto do(a) responsável técnico(a)**: retrato vertical. Salve em `public/fotos/responsavel.jpg` (cerca de 800×1000 px).
+- [ ] **Texto curto sobre o(a) profissional**: formação, experiência, jeito de atender.
 - [ ] **Número do WhatsApp** com DDD. Com ele, o botão já abre com a mensagem "Vim pelo site e quero agendar uma avaliação". Hoje usa o link `wa.link/97w9s4`.
 - [ ] **Horários de atendimento.**
 - [ ] **Logo em SVG ou PNG** (opcional). Hoje o nome é escrito em Raleway, no desenho do logo atual.
-- [ ] **Conferir com a responsável técnica** os textos de cuidados (24 h sem academia, 72 h sem esforço nas pernas, sinais de alerta) e das dúvidas.
+- [ ] **Conferir com o(a) responsável técnico(a)** os textos de cuidados (24 h sem academia, 72 h sem esforço nas pernas, sinais de alerta) e das dúvidas.
 
 Tudo isso se preenche em um lugar só: **`src/data/clinica.ts`**.
 
@@ -82,7 +82,7 @@ As imagens `public/og.png` (prévia de link no WhatsApp e redes) e `public/apple
 ## Estrutura
 
 ```
-src/data/clinica.ts      contatos, endereço, redes e responsável técnica (o que muda fica aqui)
+src/data/clinica.ts      contatos, endereço, redes e responsável técnico(a) (o que muda fica aqui)
 src/pages/               página principal, privacidade, 404, robots.txt e sitemap.xml
 src/components/          uma seção por arquivo (Abertura, Procedimento, Pilares, Etapas, Responsavel…)
 src/styles/global.css    cores, fonte, títulos e botões

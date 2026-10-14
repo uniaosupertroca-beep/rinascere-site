@@ -1,8 +1,9 @@
 ---
-import { clinica, enderecoCompleto, linkWhatsapp } from "../data/clinica.ts";
+import { clinica, enderecoCompleto, linkWhatsapp, rotulos } from "../data/clinica.ts";
 import Marca from "./Marca.astro";
 
 const r = clinica.responsavel;
+const t = rotulos();
 const ano = new Date().getFullYear();
 ---
 
@@ -27,7 +28,7 @@ const ano = new Date().getFullYear();
         <li>{enderecoCompleto}</li>
         <li>CNPJ {clinica.cnpj}</li>
         <li>
-          Responsável técnica: {r.nome ?? <span class="preencher">nome</span>}, biomédica esteta, {
+          {t.responsavel}: {r.nome ?? <span class="preencher">nome</span>}, {t.cargo.toLowerCase()}, {
             r.registro ?? <span class="preencher">CRBM nº</span>
           }
         </li>

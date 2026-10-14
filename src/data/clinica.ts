@@ -1,8 +1,10 @@
-// Tudo o que é da clínica fica aqui: contatos, endereço, redes e a responsável técnica.
+// Tudo o que é da clínica fica aqui: contatos, endereço, redes e quem é responsável técnico.
 // Campo com null ainda não foi informado pela clínica: o site mostra um espaço marcado
 // "a preencher" e o build lista o que falta (scripts/conferir.mjs).
 
 export interface Responsavel {
+  /** true para biomédica, false para biomédico. Enquanto null, o site usa "biomédico(a)". */
+  feminino: boolean | null;
   /** Nome como deve aparecer no site. */
   nome: string | null;
   /** Ex.: "CRBM-5 nº 12345". Obrigatório pelas regras de publicidade do biomédico. */
@@ -38,6 +40,7 @@ export const clinica = {
     youtube: "https://www.youtube.com/@RinascereAesthetics",
   },
   responsavel: {
+    feminino: null,
     nome: null,
     registro: null,
     sobre: null,
@@ -56,14 +59,26 @@ const destino = encodeURIComponent(`${clinica.rua.replace(", sala 05", "")}, ${c
 export const linkRotaGoogle = `https://www.google.com/maps/dir/?api=1&destination=${destino}`;
 export const linkRotaWaze = `https://waze.com/ul?q=${destino}&navigate=yes`;
 
+/** Palavras que mudam se quem responde pela clínica é biomédica ou biomédico. */
+export function rotulos(r: Responsavel = clinica.responsavel) {
+  const f = (feminino: string, masculino: string, neutro: string) => (r.feminino === null ? neutro : r.feminino ? feminino : masculino);
+  return {
+    responsavel: f("Responsável técnica", "Responsável técnico", "Responsável técnico(a)"),
+    cargo: f("Biomédica esteta", "Biomédico esteta", "Biomédico(a) esteta"),
+    habilitado: f("habilitada", "habilitado", "habilitado(a)"),
+    nomeVazio: f("Nome da biomédica", "Nome do biomédico", "Nome do(a) biomédico(a)"),
+  };
+}
+
 /** O que a clínica ainda precisa mandar. Aparece no fim do build. */
 export function pendencias(): string[] {
   const falta: string[] = [];
   const r = clinica.responsavel;
-  if (!r.nome) falta.push("Nome da responsável técnica (responsavel.nome)");
+  if (r.feminino === null) falta.push("Se quem responde pela clínica é biomédica ou biomédico (responsavel.feminino)");
+  if (!r.nome) falta.push("Nome do(a) responsável técnico(a) (responsavel.nome)");
   if (!r.registro) falta.push("Registro no conselho, ex.: CRBM-5 nº 12345 (responsavel.registro)");
-  if (!r.sobre) falta.push("Texto sobre a responsável técnica (responsavel.sobre)");
-  if (!r.foto) falta.push("Foto da responsável técnica em public/fotos/ (responsavel.foto)");
+  if (!r.sobre) falta.push("Texto sobre o(a) responsável técnico(a) (responsavel.sobre)");
+  if (!r.foto) falta.push("Foto do(a) responsável técnico(a) em public/fotos/ (responsavel.foto)");
   if (!clinica.horarios) falta.push("Horários de atendimento (horarios)");
   if (!clinica.whatsapp.numero) falta.push("Número do WhatsApp com DDD, para a mensagem pronta (whatsapp.numero)");
   return falta;
