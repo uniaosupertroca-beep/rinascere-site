@@ -50,15 +50,14 @@ Tudo isso se preenche em um lugar só: **`src/data/clinica.ts`**.
 
 A cada envio para a `main`, o GitHub Actions (`.github/workflows/publicar.yml`) gera o site, confere e publica no Cloudflare Pages.
 
-Configuração, uma vez só:
+Configuração, uma vez só (é o mesmo esquema dos outros sites: um token do Cloudflare guardado nos segredos do repositório):
 
-1. No Cloudflare, vá em **Meu perfil → Tokens de API → Criar token → Token personalizado**. Dê a permissão **Conta → Cloudflare Pages → Editar**.
-2. Neste repositório no GitHub, vá em **Settings → Secrets and variables → Actions** e crie dois segredos:
-   - `CLOUDFLARE_API_TOKEN` com o token;
-   - `CLOUDFLARE_ACCOUNT_ID` com o id da conta (aparece na lateral do painel do Cloudflare).
-
-   Nunca mande o token por chat.
+1. Abra o link abaixo já logado no Cloudflare. Ele abre a criação do token com a permissão **Cloudflare Pages → Editar** já marcada. Clique em **Continuar para o resumo → Criar token** e copie o token.
+   https://dash.cloudflare.com/profile/api-tokens?permissionGroupKeys=%5B%7B%22key%22%3A%22page%22%2C%22type%22%3A%22edit%22%7D%5D&accountId=%2A&zoneId=all&name=Rinascere%20Pages
+2. Abra https://github.com/uniaosupertroca-beep/rinascere-site/settings/secrets/actions/new. Em **Name**, escreva `CLOUDFLARE_API_TOKEN`. Em **Secret**, cole o token e clique em **Add secret**. Nunca mande o token por chat.
 3. Vá em **Actions → Publicar → Run workflow**. Na primeira vez, o projeto `rinascere` é criado sozinho.
+
+O id da conta do Cloudflare já está no fluxo (é o mesmo do jaine-app).
 
 O endereço final aparece no resumo da execução. Se `rinascere.pages.dev` já tiver dono, o Cloudflare usa um parecido. Nesse caso, atualize `endereco` em `src/data/clinica.ts`.
 
