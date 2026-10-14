@@ -32,19 +32,18 @@ O `npm run build` **barra a publicação** se alguma dessas frases voltar (`scri
 
 > Atenção para a clínica: em fev/2026 o TRF1 anulou a Resolução CFBM 241/2014, que trata da estética biomédica. O CFBM recorreu e diz que as outras resoluções seguem valendo. Já a Sociedade Brasileira de Urologia considera o preenchimento peniano ato médico. Vale a clínica confirmar a situação com um advogado.
 
-## O que a clínica ainda precisa mandar
+## Dados da clínica
 
-Enquanto não chegam, o site mostra espaços marcados ou textos neutros, e o build lista o que falta.
+Tudo fica em **`src/data/clinica.ts`**. O build avisa se faltar algo.
 
-- [x] **Profissional:** Bruna Zaccarias, biomédica esteta, CRBM 9292 (publicado pela clínica no Instagram, set/2026).
-- [ ] **Confirmar se ela é a responsável técnica.** Se for, mude `responsavelTecnico` para `true` em `src/data/clinica.ts` e o site passa a dizer "Responsável técnica". Se não for, mande o nome e o CRBM do responsável técnico, que o CFBM exige na divulgação. Confirme também a região do CRBM (ex.: CRBM-5).
-- [ ] **Foto da Bruna**: retrato vertical. Salve em `public/fotos/` e preencha `responsavel.foto`. Hoje aparece um cartão com as iniciais.
-- [ ] **Número do WhatsApp** com DDD. Com ele, o botão já abre com a mensagem pronta. Hoje usa o link `wa.link/97w9s4` (o Linktree da clínica usa `wa.link/0cnpo5`; confirmar qual é o atual).
-- [ ] **Horários de atendimento.**
-- [ ] **Fotos originais** (as do site atual são pequenas, cerca de 500 px).
-- [ ] **Conferir com a profissional** os textos de cuidados (24 h sem academia, 72 h sem esforço nas pernas, sinais de alerta) e das dúvidas.
-
-Tudo isso se preenche em um lugar só: **`src/data/clinica.ts`**.
+- [x] **Responsável técnica:** Bruna M. Zaccarias, biomédica esteta, CRBM 9292 (Instagram da clínica, set/2026; confirmado).
+- [x] **Foto da responsável técnica:** do post de apresentação no Instagram (`src/assets/fotos/bruna-zaccarias.jpg`).
+- [x] **Logo oficial:** recortado do perfil do Instagram, com fundo transparente (`src/assets/logo-rinascere.png`).
+- [x] **WhatsApp:** (47) 99191-6750 (perfil do WhatsApp Business). O botão já abre com a mensagem pronta.
+- [x] **Horários:** somente com hora marcada.
+- [ ] **Região do CRBM** (ex.: CRBM-5 nº 9292), se a clínica quiser mostrar completo.
+- [ ] **Fotos originais** em boa resolução (as do site antigo têm cerca de 500 px).
+- [ ] **Conferir com a responsável técnica** os textos de cuidados (24 h sem academia, 72 h sem esforço nas pernas, sinais de alerta) e das dúvidas.
 
 ## Publicar
 

@@ -28,10 +28,10 @@ export const clinica = {
   bairro: "Centro",
   cep: "88301-060",
   /** Ex.: ["Segunda a sexta, das 9h às 19h", "Sábado, das 9h às 12h"]. */
-  horarios: null as string[] | null,
+  horarios: ["Somente com hora marcada"] as string[] | null,
   whatsapp: {
     /** Só dígitos, com país e DDD (ex.: "5547999999999"). Com ele, o botão já abre com a mensagem pronta. */
-    numero: null as string | null,
+    numero: "5547991916750" as string | null,
     /** Link curto que a clínica já usa; vale enquanto o número não for informado. */
     linkAtual: "https://wa.link/97w9s4",
     mensagem: "Olá! Vim pelo site e quero agendar uma avaliação.",
@@ -56,6 +56,12 @@ export const clinica = {
 export const linkWhatsapp = (): string => {
   const { numero, linkAtual, mensagem } = clinica.whatsapp;
   return numero ? `https://wa.me/${numero}?text=${encodeURIComponent(mensagem)}` : linkAtual;
+};
+
+/** "(47) 99191-6750", a partir do número do WhatsApp. */
+export const telefoneFormatado = (): string | null => {
+  const n = clinica.whatsapp.numero?.replace(/^55/, "");
+  return n ? `(${n.slice(0, 2)}) ${n.slice(2, n.length - 4)}-${n.slice(-4)}` : null;
 };
 
 export const enderecoCompleto = `${clinica.rua}, ${clinica.bairro}, ${clinica.cidade} (${clinica.uf}), CEP ${clinica.cep}`;

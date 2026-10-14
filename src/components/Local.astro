@@ -1,6 +1,6 @@
 ---
 // Sem mapa embutido: os botões abrem a rota no Google Maps ou no Waze (página mais leve e sem rastreio).
-import { clinica, linkRotaGoogle, linkRotaWaze } from "../data/clinica.ts";
+import { clinica, linkRotaGoogle, linkRotaWaze, linkWhatsapp, telefoneFormatado } from "../data/clinica.ts";
 import Icone from "./Icone.astro";
 
 const redes = [
@@ -37,6 +37,14 @@ const redes = [
             )
           }
         </div>
+        {
+          telefoneFormatado() && (
+            <a class="telefone" href={linkWhatsapp()} target="_blank" rel="noopener">
+              <Icone nome="whatsapp" tamanho={18} />
+              WhatsApp {telefoneFormatado()}
+            </a>
+          )
+        }
         <div class="acoes">
           <a class="botao linha" href={linkRotaGoogle} target="_blank" rel="noopener">
             <Icone nome="rota" tamanho={17} />
@@ -125,6 +133,21 @@ const redes = [
   .horarios ul {
     list-style: none;
     padding: 0;
+  }
+  .telefone {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    justify-self: start;
+    font-weight: 650;
+    color: var(--tinta);
+    text-decoration: none;
+  }
+  .telefone :global(svg) {
+    color: var(--zap);
+  }
+  .telefone:hover {
+    color: var(--bronze-texto);
   }
   .acoes {
     margin-top: 8px;

@@ -1,5 +1,5 @@
 ---
-import { clinica, enderecoCompleto, linkWhatsapp, rotulos } from "../data/clinica.ts";
+import { clinica, enderecoCompleto, linkWhatsapp, rotulos, telefoneFormatado } from "../data/clinica.ts";
 import Marca from "./Marca.astro";
 
 const r = clinica.responsavel;
@@ -16,7 +16,7 @@ const ano = new Date().getFullYear();
     <div>
       <h2>Contato</h2>
       <ul>
-        <li><a href={linkWhatsapp()} target="_blank" rel="noopener">WhatsApp</a></li>
+        <li><a href={linkWhatsapp()} target="_blank" rel="noopener">WhatsApp {telefoneFormatado()}</a></li>
         <li><a href={clinica.redes.instagram} target="_blank" rel="noopener">Instagram</a></li>
         <li><a href={clinica.redes.facebook} target="_blank" rel="noopener">Facebook</a></li>
         <li><a href={clinica.redes.youtube} target="_blank" rel="noopener">YouTube</a></li>
