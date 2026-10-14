@@ -1,4 +1,6 @@
 ---
+import { Image } from "astro:assets";
+import foto from "../assets/fotos/atendimento.jpg";
 import Icone from "./Icone.astro";
 
 const pilares = [
@@ -22,8 +24,16 @@ const pilares = [
 
 <section class="secao escura" aria-labelledby="t-pilares">
   <div class="envolve">
-    <p class="chapeu">Por que a Rinascere</p>
-    <h2 class="titulo" id="t-pilares">Discrição faz parte <strong>do atendimento.</strong></h2>
+    <div class="cabeca">
+      <div>
+        <p class="chapeu">Por que a Rinascere</p>
+        <h2 class="titulo" id="t-pilares">Discrição faz parte <strong>do atendimento.</strong></h2>
+        <p class="abre">Cada conversa acontece com hora marcada, em sala reservada, com tempo para tirar todas as dúvidas antes de decidir.</p>
+      </div>
+      <figure class="foto">
+        <Image src={foto} alt="Atendimento no consultório da Rinascere: profissional anotando durante a conversa com o paciente" widths={[395]} sizes="(min-width: 960px) 395px, 100vw" loading="lazy" decoding="async" />
+      </figure>
+    </div>
     <ul class="pilares">
       {
         pilares.map((p) => (
@@ -41,6 +51,37 @@ const pilares = [
 </section>
 
 <style>
+  .cabeca {
+    display: grid;
+    gap: 40px;
+    align-items: end;
+  }
+  @media (min-width: 960px) {
+    .cabeca {
+      grid-template-columns: 1.3fr 0.7fr;
+      gap: 72px;
+    }
+  }
+  .foto {
+    position: relative;
+    max-width: 420px;
+    width: calc(100% - 14px);
+  }
+  .foto::before {
+    content: "";
+    position: absolute;
+    inset: -14px -14px 14px 14px;
+    border: 1px solid color-mix(in oklab, var(--bronze) 70%, transparent);
+    border-radius: var(--raio);
+  }
+  .foto :global(img) {
+    position: relative;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 395 / 263;
+    object-fit: cover;
+    border-radius: var(--raio);
+  }
   .pilares {
     list-style: none;
     padding: 0;

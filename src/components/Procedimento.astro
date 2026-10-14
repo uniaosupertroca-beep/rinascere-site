@@ -1,31 +1,40 @@
 ---
+import { Image } from "astro:assets";
+import foto from "../assets/fotos/procedimento.jpg";
+
 const resumo = [
   { termo: "Técnica", texto: "Preenchimento com ácido hialurônico" },
   { termo: "Anestesia", texto: "Local" },
   { termo: "Onde é feito", texto: "No consultório, sem internação" },
-  { termo: "Duração", texto: "Temporária: o ácido hialurônico é absorvido aos poucos, e a manutenção é combinada com você" },
+  { termo: "Duração", texto: "Temporária: o ácido é absorvido aos poucos, e a manutenção é combinada com você" },
   { termo: "Volta à rotina", texto: "Academia depois de 24 horas; esforço intenso nas pernas depois de 72 horas" },
 ];
 ---
 
 <section class="secao linho" id="procedimento" aria-labelledby="t-procedimento">
-  <div class="envolve grade">
-    <div class="texto">
-      <p class="chapeu">O procedimento</p>
-      <h2 class="titulo" id="t-procedimento">Harmonização íntima, <strong>sem cirurgia.</strong></h2>
-      <div class="corpo">
-        <p class="destaque">
-          É um preenchimento estético feito com ácido hialurônico, uma substância semelhante à que o próprio corpo produz e usada há anos na
-          estética. O objetivo é trabalhar volume e contorno, respeitando a anatomia de cada homem.
-        </p>
-        <p>
-          Não envolve cortes nem prótese. A aplicação é feita no consultório, com anestesia local. Por ser um procedimento estético, ele não
-          tem como objetivo mudar a função sexual: queixas de ereção ou de comprimento são da área médica, com um urologista.
-        </p>
-        <p>
-          Todo caso começa por uma avaliação. É nela que a gente entende o que você espera, conhece seu histórico de saúde e diz, com franqueza,
-          o que é possível para você.
-        </p>
+  <div class="envolve">
+    <div class="grade">
+      <figure class="foto">
+        <Image src={foto} alt="Homem de cueca em foto preto e branco, em fundo escuro" widths={[400, 498]} sizes="(min-width: 960px) 420px, 100vw" loading="lazy" decoding="async" />
+      </figure>
+      <div class="texto">
+        <p class="chapeu">O procedimento</p>
+        <h2 class="titulo" id="t-procedimento">Harmonização íntima, <strong>sem cirurgia.</strong></h2>
+        <div class="corpo">
+          <p class="destaque">
+            É um preenchimento estético com ácido hialurônico, uma substância que existe naturalmente no nosso corpo. O objetivo é trabalhar volume
+            e contorno, respeitando a anatomia de cada homem.
+          </p>
+          <p>
+            O ácido usado nos preenchimentos é produzido por fermentação biológica e passa por purificação, o que reduz o risco de alergia. Não
+            envolve cortes nem prótese: a aplicação é feita no consultório, com anestesia local.
+          </p>
+          <p>
+            Por ser um procedimento estético, ele não tem como objetivo mudar a função sexual: queixas de ereção ou de comprimento são da área
+            médica, com um urologista. Todo caso começa por uma avaliação, em que a gente entende o que você espera, conhece seu histórico de
+            saúde e diz, com franqueza, o que é possível para você.
+          </p>
+        </div>
       </div>
     </div>
     <div class="resumo">
@@ -47,14 +56,41 @@ const resumo = [
 <style>
   .grade {
     display: grid;
-    gap: 56px;
-    align-items: start;
+    gap: 48px;
+    align-items: center;
   }
   @media (min-width: 960px) {
     .grade {
-      grid-template-columns: 1.15fr 0.85fr;
+      grid-template-columns: 0.8fr 1.2fr;
       gap: 88px;
     }
+  }
+  .foto {
+    position: relative;
+    max-width: 440px;
+    width: calc(100% - 14px);
+  }
+  .foto::before {
+    content: "";
+    position: absolute;
+    inset: 14px 14px -14px -14px;
+    border: 1px solid var(--bronze);
+    border-radius: var(--raio);
+  }
+  @media (max-width: 959px) {
+    .foto {
+      margin-left: 14px;
+    }
+  }
+  .foto :global(img) {
+    position: relative;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    object-position: 50% 30%;
+    border-radius: var(--raio);
+    background: var(--grafite);
   }
   .corpo {
     margin-top: 32px;
@@ -69,18 +105,12 @@ const resumo = [
     color: var(--tinta);
   }
   .resumo {
+    margin-top: clamp(56px, 7vw, 88px);
     background: var(--branco);
     border: 1px solid var(--linha);
     border-top: 2px solid var(--bronze);
     border-radius: var(--raio);
     padding: clamp(26px, 3.4vw, 40px);
-  }
-  @media (min-width: 960px) {
-    .resumo {
-      position: sticky;
-      top: 32px;
-      margin-top: 64px;
-    }
   }
   h3 {
     font-size: 21px;
@@ -88,15 +118,32 @@ const resumo = [
   }
   dl {
     margin-top: 14px;
+    display: grid;
   }
   dl div {
     display: grid;
     gap: 4px;
+    align-content: start;
     padding: 16px 0;
     border-top: 1px solid var(--linha);
   }
   dl div:first-child {
     border-top: 0;
+  }
+  @media (min-width: 1080px) {
+    dl {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      margin-top: 22px;
+    }
+    dl div {
+      padding: 0 22px;
+      border-top: 0;
+      border-left: 1px solid var(--linha);
+    }
+    dl div:first-child {
+      padding-left: 0;
+      border-left: 0;
+    }
   }
   dt {
     font-size: 12px;
