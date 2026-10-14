@@ -43,6 +43,8 @@ Cada página tem: o que é, para que costuma ser procurado, resumo, passo a pass
 
 Para criar uma página nova, é só acrescentar um item em `procedimentos.ts`: a página, o cartão na lista e o sitemap saem sozinhos.
 
+**Ícones:** cada procedimento tem o seu (campo `icone`), desenhado em `src/data/icones.ts` no mesmo traço dos demais. Ele aparece no cartão, no emblema do topo da página, na ficha "Em resumo" e nas etapas. Os ícones da ficha e das etapas são escolhidos pelo texto (Duração, Anestesia, Retorno…); o que não tiver correspondência usa o ícone do procedimento.
+
 **Antes de divulgar:** a responsável técnica deve revisar o texto de cada página (indicações, durações médias e cuidados). Os textos não citam marcas de produtos nem de aparelhos (Ultraformer, Lavieen etc.), como manda o art. 11 do Código de Ética do biomédico, e a conferência do build barra essas marcas.
 
 **Ficaram de fora até a confirmação da responsável técnica:**
@@ -99,11 +101,12 @@ As imagens `public/og.png` (prévia de link no WhatsApp e redes) e `public/apple
 
 ```
 src/data/clinica.ts      contatos, endereço, redes e responsável técnico(a) (o que muda fica aqui)
-src/pages/               página principal, privacidade, 404, robots.txt e sitemap.xml
+src/data/procedimentos.ts  textos de cada procedimento (uma página por item)
+src/data/icones.ts       ícones em SVG (sem biblioteca externa)
+src/pages/               página principal, procedimentos, privacidade, 404, robots.txt e sitemap.xml
 src/components/          uma seção por arquivo (Abertura, Procedimento, Pilares, Etapas, Responsavel…)
 src/styles/global.css    cores, fonte, títulos e botões
 public/_headers          cabeçalhos de segurança (CSP sem scripts, HSTS) e cache
 scripts/conferir.mjs     conferência depois do build
 ```
 
-Para virar o site completo da clínica (outros procedimentos), cada procedimento ganha a própria página em `src/pages/`, reaproveitando as seções e o layout.

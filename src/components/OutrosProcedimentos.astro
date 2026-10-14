@@ -13,7 +13,7 @@ import CartaoProcedimento from "./CartaoProcedimento.astro";
       {
         procedimentos.map((p) => (
           <li>
-            <CartaoProcedimento nome={p.nome} resumo={p.resumo} href={`/procedimentos/${p.slug}/`} compacto />
+            <CartaoProcedimento nome={p.nome} resumo={p.resumo} href={`/procedimentos/${p.slug}/`} icone={p.icone} compacto />
           </li>
         ))
       }

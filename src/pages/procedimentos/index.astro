@@ -1,17 +1,18 @@
 ---
+import Cabecalho from "../../components/Cabecalho.astro";
 import CartaoProcedimento from "../../components/CartaoProcedimento.astro";
+import Chamada from "../../components/Chamada.astro";
+import Icone from "../../components/Icone.astro";
 import Rodape from "../../components/Rodape.astro";
 import Topo from "../../components/Topo.astro";
 import ZapFlutuante from "../../components/ZapFlutuante.astro";
 import { linkWhatsapp } from "../../data/clinica.ts";
-import { categorias, porCategoria } from "../../data/procedimentos.ts";
+import { categorias, iconeDaCategoria, porCategoria } from "../../data/procedimentos.ts";
 import Base from "../../layouts/Base.astro";
-import Icone from "../../components/Icone.astro";
 
-const intimo = {
-  nome: "Harmonização íntima masculina",
-  resumo: "Preenchimento com ácido hialurônico para volume e contorno, com avaliação individual e sigilo do primeiro contato ao retorno.",
-  href: "/",
+const descricaoDaCategoria = {
+  Rosto: "Linhas de expressão, contorno, volume, firmeza e qualidade da pele.",
+  Corpo: "Gordura localizada, firmeza e contorno.",
 };
 ---
 
@@ -21,80 +22,186 @@ const intimo = {
 >
   <Topo interna />
   <main id="conteudo">
-    <section class="faixa-titulo escura" aria-labelledby="t-procedimentos">
-      <div class="envolve">
-        <p class="chapeu">Procedimentos</p>
-        <h1 class="titulo" id="t-procedimentos">Cuidados para rosto, <strong>corpo e região íntima.</strong></h1>
-        <p class="abre">Todos começam por uma avaliação individual, com indicação honesta do que faz sentido para você.</p>
-        <div class="acoes">
-          <a class="botao zap" href={linkWhatsapp()} target="_blank" rel="noopener">
-            <Icone nome="whatsapp" tamanho={20} />
-            Agendar avaliação
-          </a>
-        </div>
-      </div>
-    </section>
+    <Cabecalho
+      id="t-procedimentos"
+      chapeu="Procedimentos"
+      titulo="Cuidados para rosto,"
+      destaque="corpo e região íntima."
+      resumo="Todos começam por uma avaliação individual, com indicação honesta do que faz sentido para você."
+      palavra="Rinascere"
+    >
+      <a class="botao zap" href={linkWhatsapp()} target="_blank" rel="noopener">
+        <Icone nome="whatsapp" tamanho={20} />
+        Agendar avaliação
+      </a>
+    </Cabecalho>
 
-    <section class="secao linho" aria-labelledby="t-intimo">
-      <div class="envolve">
-        <h2 class="grupo" id="t-intimo">Íntimo masculino</h2>
-        <ul class="grade">
-          <li><CartaoProcedimento {...intimo} /></li>
-        </ul>
+    <nav class="atalhos" aria-label="Áreas de tratamento">
+      <ul class="envolve">
+        <li>
+          <a href="#intimo"><Icone nome="escudo" tamanho={20} />Íntimo masculino<span class="conta">1</span></a>
+        </li>
         {
           categorias.map((c) => (
-            <>
-              <h2 class="grupo" id={`t-${c.toLowerCase()}`}>{c}</h2>
+            <li>
+              <a href={`#${c.toLowerCase()}`}>
+                <Icone nome={iconeDaCategoria[c]} tamanho={20} />
+                {c}
+                <span class="conta">{porCategoria(c).length}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <section class="secao linho lista-procedimentos" aria-label="Lista de procedimentos">
+      <div class="envolve">
+        <div class="grupo" id="intimo">
+          <header class="cabeca">
+            <span class="selo"><Icone nome="escudo" tamanho={26} traco={1.4} /></span>
+            <div>
+              <h2>Íntimo masculino <span class="conta">1 procedimento</span></h2>
+              <p>Procedimento para homens, com sigilo do primeiro contato ao retorno.</p>
+            </div>
+          </header>
+          <CartaoProcedimento
+            escuro
+            rotulo="Atendimento reservado"
+            nome="Harmonização íntima masculina"
+            resumo="Preenchimento com ácido hialurônico para volume e contorno, feito em consultório depois de uma avaliação individual."
+            href="/"
+            icone="escudo"
+          />
+        </div>
+        {
+          categorias.map((c) => (
+            <div class="grupo" id={c.toLowerCase()}>
+              <header class="cabeca">
+                <span class="selo">
+                  <Icone nome={iconeDaCategoria[c]} tamanho={26} traco={1.4} />
+                </span>
+                <div>
+                  <h2>
+                    {c} <span class="conta">{porCategoria(c).length} procedimentos</span>
+                  </h2>
+                  <p>{descricaoDaCategoria[c]}</p>
+                </div>
+              </header>
               <ul class="grade">
                 {porCategoria(c).map((p) => (
                   <li>
-                    <CartaoProcedimento nome={p.nome} resumo={p.resumo} href={`/procedimentos/${p.slug}/`} />
+                    <CartaoProcedimento nome={p.nome} resumo={p.resumo} href={`/procedimentos/${p.slug}/`} icone={p.icone} />
                   </li>
                 ))}
               </ul>
-            </>
+            </div>
           ))
         }
       </div>
     </section>
+
+    <Chamada />
     <ZapFlutuante />
   </main>
   <Rodape />
 </Base>
 
 <style>
-  .faixa-titulo {
-    background: var(--grafite);
-    color: var(--claro);
-    padding: clamp(140px, 16vw, 190px) 0 clamp(64px, 8vw, 96px);
+  /* Atalhos para as áreas, logo abaixo da abertura. */
+  .atalhos {
+    background: var(--grafite-2);
+    border-top: 1px solid color-mix(in oklab, var(--claro) 8%, transparent);
   }
-  .faixa-titulo .chapeu,
-  .faixa-titulo .titulo strong {
+  .atalhos ul {
+    list-style: none;
+    padding: 14px 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .atalhos a {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 44px;
+    padding: 0 18px 0 14px;
+    border-radius: 999px;
+    border: 1px solid color-mix(in oklab, var(--claro) 16%, transparent);
+    color: var(--claro);
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: border-color 0.2s;
+  }
+  .atalhos a:hover {
+    border-color: var(--bronze);
+  }
+  .atalhos :global(svg) {
     color: var(--bronze);
   }
-  .faixa-titulo .abre {
-    color: var(--claro-2);
+  .atalhos .conta {
+    display: grid;
+    place-items: center;
+    min-width: 24px;
+    height: 24px;
+    padding-inline: 6px;
+    border-radius: 999px;
+    background: color-mix(in oklab, var(--bronze) 22%, transparent);
+    color: var(--bronze-claro);
+    font-size: 12px;
+    font-weight: 700;
   }
-  .faixa-titulo .acoes {
-    margin-top: 32px;
+
+  .lista-procedimentos .envolve {
+    display: grid;
+    gap: clamp(64px, 8vw, 96px);
   }
   .grupo {
-    margin-top: 56px;
-    font-size: 13px;
-    font-weight: 650;
-    letter-spacing: 0.24em;
-    text-transform: uppercase;
-    color: var(--bronze-texto);
-    padding-bottom: 14px;
+    scroll-margin-top: 96px;
+  }
+  .cabeca {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding-bottom: 22px;
+    margin-bottom: 28px;
     border-bottom: 1px solid var(--linha);
   }
-  .grupo:first-child {
-    margin-top: 0;
+  .selo {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: var(--grafite);
+    color: var(--bronze);
+  }
+  .cabeca h2 {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 6px 14px;
+    font-size: clamp(26px, 3.4vw, 34px);
+    font-weight: 300;
+    letter-spacing: -0.01em;
+  }
+  .cabeca h2 .conta {
+    font-size: 12px;
+    font-weight: 650;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--bronze-texto);
+  }
+  .cabeca p {
+    margin-top: 4px;
+    color: var(--tinta-2);
+    font-size: 16px;
   }
   .grade {
     list-style: none;
     padding: 0;
-    margin-top: 20px;
     display: grid;
     gap: 16px;
   }
@@ -110,5 +217,19 @@ const intimo = {
   }
   .grade li {
     display: grid;
+    container-type: inline-size;
+  }
+  @media (min-width: 720px) and (max-width: 1079px) {
+    .grade li:last-child:nth-child(odd) {
+      grid-column: 1 / -1;
+    }
+  }
+  @media (min-width: 1080px) {
+    .grade li:last-child:nth-child(3n + 1) {
+      grid-column: 1 / -1;
+    }
+    .grade:has(> li:nth-child(2):last-child) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
   }
 </style>

@@ -7,12 +7,16 @@
 // (registro na Anvisa para esse uso), endolaser/endolifting (habilitação) e emagrecimento
 // (pode envolver medicamentos, que só o médico prescreve).
 
+import type { NomeIcone } from "./icones.ts";
+
 export type Categoria = "Rosto" | "Corpo";
 
 export interface Procedimento {
   slug: string;
   nome: string;
   categoria: Categoria;
+  /** Ícone do procedimento, nos cartões e no topo da página. */
+  icone: NomeIcone;
   /** Parte em destaque do título, depois do nome. */
   destaque: string;
   /** Uma frase: aparece nos cartões e na descrição para o Google. */
@@ -30,6 +34,7 @@ export const procedimentos: Procedimento[] = [
     slug: "toxina-botulinica",
     nome: "Toxina botulínica",
     categoria: "Rosto",
+    icone: "seringa",
     destaque: "com leveza.",
     resumo:
       "Suaviza as linhas de expressão da testa, entre as sobrancelhas e ao redor dos olhos, relaxando por um período os músculos que as formam.",
@@ -79,6 +84,7 @@ export const procedimentos: Procedimento[] = [
     slug: "harmonizacao-facial",
     nome: "Harmonização facial",
     categoria: "Rosto",
+    icone: "rosto",
     destaque: "com proporção.",
     resumo:
       "Um plano individual que combina técnicas, como preenchimento e toxina botulínica, para valorizar a proporção e o equilíbrio do rosto.",
@@ -128,6 +134,7 @@ export const procedimentos: Procedimento[] = [
     slug: "preenchimento-labial",
     nome: "Preenchimento labial",
     categoria: "Rosto",
+    icone: "labios",
     destaque: "com equilíbrio.",
     resumo:
       "Ácido hialurônico aplicado nos lábios para definir o contorno, repor volume e melhorar a hidratação, respeitando a proporção do rosto.",
@@ -166,6 +173,7 @@ export const procedimentos: Procedimento[] = [
     slug: "bioestimulador-de-colageno",
     nome: "Bioestimulador de colágeno",
     categoria: "Rosto",
+    icone: "colageno",
     destaque: "com efeito gradual.",
     resumo:
       "Substâncias que estimulam o próprio corpo a produzir colágeno, melhorando aos poucos a firmeza e a qualidade da pele do rosto e do corpo.",
@@ -212,6 +220,7 @@ export const procedimentos: Procedimento[] = [
     slug: "fios-de-pdo",
     nome: "Fios de PDO",
     categoria: "Rosto",
+    icone: "fios",
     destaque: "sustentação sem cirurgia.",
     resumo: "Fios absorvíveis colocados sob a pele para dar sustentação e estimular colágeno, sem cortes e com anestesia local.",
     oQueE: [
@@ -257,6 +266,7 @@ export const procedimentos: Procedimento[] = [
     slug: "ultrassom-microfocado",
     nome: "Ultrassom microfocado",
     categoria: "Rosto",
+    icone: "ultrassom",
     destaque: "sem agulhas.",
     resumo:
       "Energia de ultrassom focada nas camadas profundas da pele para estimular colágeno e melhorar firmeza e contorno, sem cortes e sem agulhas.",
@@ -298,6 +308,7 @@ export const procedimentos: Procedimento[] = [
     slug: "laser-de-tulio",
     nome: "Laser de túlio",
     categoria: "Rosto",
+    icone: "laser",
     destaque: "para a qualidade da pele.",
     resumo: "Laser fracionado não ablativo que trabalha textura, viço, poros e manchas da pele, com poucos dias de recuperação.",
     oQueE: [
@@ -332,6 +343,7 @@ export const procedimentos: Procedimento[] = [
     slug: "criolipolise",
     nome: "Criolipólise",
     categoria: "Corpo",
+    icone: "floco",
     destaque: "para a gordura localizada.",
     resumo:
       "Resfriamento controlado que atinge as células de gordura localizada, eliminadas pelo próprio corpo ao longo das semanas seguintes.",
@@ -373,6 +385,7 @@ export const procedimentos: Procedimento[] = [
     slug: "harmonizacao-de-gluteo",
     nome: "Harmonização de glúteo",
     categoria: "Corpo",
+    icone: "contorno",
     destaque: "firmeza e contorno.",
     resumo:
       "Técnicas como bioestimuladores de colágeno para trabalhar firmeza, textura e contorno dos glúteos, conforme avaliação individual.",
@@ -412,3 +425,40 @@ export const procedimentos: Procedimento[] = [
 export const categorias: Categoria[] = ["Rosto", "Corpo"];
 
 export const porCategoria = (c: Categoria) => procedimentos.filter((p) => p.categoria === c);
+
+export const iconeDaCategoria: Record<Categoria, NomeIcone> = { Rosto: "rosto", Corpo: "contorno" };
+
+// Ícones da ficha "Em resumo" e das etapas, escolhidos pelo texto. O que não tiver
+// correspondência usa o ícone do próprio procedimento (por exemplo, "Técnica" e "Aplicação").
+const ICONES_DA_FICHA: [RegExp, NomeIcone][] = [
+  [/dura[cç][aã]o/i, "ampulheta"],
+  [/efeito/i, "evolucao"],
+  [/rotina/i, "maleta"],
+  [/anestesia/i, "gota"],
+  [/sess[oõ]es/i, "calendario"],
+  [/produto|material/i, "frasco"],
+  [/incha[cç]o|recupera/i, "curativo"],
+  [/revers/i, "desfazer"],
+  [/absor/i, "ciclo"],
+  [/sensa[cç][aã]o/i, "termometro"],
+  [/solar/i, "sol"],
+  [/t[eé]cnicas/i, "camadas"],
+];
+
+const ICONES_DA_ETAPA: [RegExp, NomeIcone][] = [
+  [/whatsapp/i, "conversa"],
+  [/reavalia|retorno|acompanhamento/i, "calendario"],
+  [/an[aá]lise|avalia/i, "prancheta"],
+  [/plano/i, "lista"],
+  [/marca[cç][aã]o/i, "caneta"],
+  [/anestesia|preparo/i, "gota"],
+  [/intervalo/i, "ampulheta"],
+  [/renova/i, "brilho"],
+  [/elimina/i, "reducao"],
+];
+
+const procurar = (lista: [RegExp, NomeIcone][], texto: string, padrao: NomeIcone) =>
+  lista.find(([regra]) => regra.test(texto))?.[1] ?? padrao;
+
+export const iconeDaFicha = (termo: string, p: Procedimento) => procurar(ICONES_DA_FICHA, termo, p.icone);
+export const iconeDaEtapa = (titulo: string, p: Procedimento) => procurar(ICONES_DA_ETAPA, titulo, p.icone);

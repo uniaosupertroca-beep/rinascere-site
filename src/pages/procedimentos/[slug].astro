@@ -1,15 +1,19 @@
 ---
 // Página de cada procedimento, gerada a partir de src/data/procedimentos.ts.
+import type { ImageMetadata } from "astro";
+import { Image } from "astro:assets";
+import Cabecalho from "../../components/Cabecalho.astro";
 import CartaoProcedimento from "../../components/CartaoProcedimento.astro";
 import Chamada from "../../components/Chamada.astro";
 import Duvidas from "../../components/Duvidas.astro";
 import Etapas from "../../components/Etapas.astro";
 import Icone from "../../components/Icone.astro";
+import Monograma from "../../components/Monograma.astro";
 import Rodape from "../../components/Rodape.astro";
 import Topo from "../../components/Topo.astro";
 import ZapFlutuante from "../../components/ZapFlutuante.astro";
 import { clinica, linkWhatsapp, mensagemPara, rotulos } from "../../data/clinica.ts";
-import { type Procedimento, porCategoria, procedimentos } from "../../data/procedimentos.ts";
+import { iconeDaEtapa, iconeDaFicha, type Procedimento, porCategoria, procedimentos } from "../../data/procedimentos.ts";
 import Base from "../../layouts/Base.astro";
 
 export function getStaticPaths() {
@@ -25,25 +29,30 @@ const mensagem = mensagemPara(p.nome);
 const r = clinica.responsavel;
 const t = rotulos();
 const relacionados = porCategoria(p.categoria).filter((x) => x.slug !== p.slug);
+const etapas = p.etapas.map((e) => ({ ...e, icone: iconeDaEtapa(e.titulo, p) }));
+const fotos = import.meta.glob<{ default: ImageMetadata }>("../../assets/fotos/*.{jpg,jpeg,png,webp}", { eager: true });
+const foto = r.foto ? fotos[`../../assets/fotos/${r.foto}`]?.default : undefined;
 ---
 
 <Base titulo={`${p.nome} em ${clinica.cidade} (${clinica.uf}) | Rinascere Aesthetics`} descricao={`${p.resumo} Avaliação individual na Rinascere, no centro de ${clinica.cidade} (${clinica.uf}).`}>
   <Topo interna />
   <main id="conteudo">
-    <section class="faixa-titulo escura" aria-labelledby="t-nome">
-      <div class="envolve">
-        <p class="chapeu"><a href="/procedimentos/">Procedimentos</a><span aria-hidden="true">·</span>{p.categoria}</p>
-        <h1 class="titulo" id="t-nome">{p.nome}, <strong>{p.destaque}</strong></h1>
-        <p class="abre">{p.resumo}</p>
-        <div class="acoes">
-          <a class="botao zap" href={linkWhatsapp(mensagem)} target="_blank" rel="noopener">
-            <Icone nome="whatsapp" tamanho={20} />
-            Agendar avaliação
-          </a>
-          <a class="botao linha" href="/procedimentos/">Ver todos os procedimentos</a>
-        </div>
-      </div>
-    </section>
+    <Cabecalho
+      id="t-nome"
+      trilha={{ href: "/procedimentos/", texto: "Procedimentos" }}
+      chapeu={p.categoria}
+      titulo={`${p.nome},`}
+      destaque={p.destaque}
+      resumo={p.resumo}
+      icone={p.icone}
+      palavra={p.categoria}
+    >
+      <a class="botao zap" href={linkWhatsapp(mensagem)} target="_blank" rel="noopener">
+        <Icone nome="whatsapp" tamanho={20} />
+        Agendar avaliação
+      </a>
+      <a class="botao linha" href="/procedimentos/">Ver todos os procedimentos</a>
+    </Cabecalho>
 
     <section class="secao linho" aria-labelledby="t-o-que-e">
       <div class="envolve grade">
@@ -58,7 +67,9 @@ const relacionados = porCategoria(p.categoria).filter((x) => x.slug !== p.slug);
             {
               p.indicacoes.map((item) => (
                 <li>
-                  <Icone nome="certo" tamanho={18} />
+                  <span class="visto">
+                    <Icone nome="certo" tamanho={16} traco={2} />
+                  </span>
                   {item}
                 </li>
               ))
@@ -66,22 +77,34 @@ const relacionados = porCategoria(p.categoria).filter((x) => x.slug !== p.slug);
           </ul>
         </div>
         <div class="ficha">
-          <h3>Em resumo</h3>
+          <h3>
+            <Icone nome={p.icone} tamanho={22} />
+            Em resumo
+          </h3>
           <dl>
             {
               p.ficha.map((f) => (
                 <div>
-                  <dt>{f.termo}</dt>
+                  <dt>
+                    <span class="ficha-icone">
+                      <Icone nome={iconeDaFicha(f.termo, p)} tamanho={20} traco={1.5} />
+                    </span>
+                    {f.termo}
+                  </dt>
                   <dd>{f.texto}</dd>
                 </div>
               ))
             }
           </dl>
+          <a class="botao zap" href={linkWhatsapp(mensagem)} target="_blank" rel="noopener">
+            <Icone nome="whatsapp" tamanho={18} />
+            Tirar dúvidas no WhatsApp
+          </a>
         </div>
       </div>
     </section>
 
-    <Etapas etapas={p.etapas} chapeu="Como é feito" titulo="Da avaliação" destaque="ao retorno." id="como-e-feito" />
+    <Etapas etapas={etapas} chapeu="Como é feito" titulo="Da avaliação" destaque="ao retorno." id="como-e-feito" />
 
     <section class="secao escura" aria-labelledby="t-cuidados">
       <div class="envolve cuidados">
@@ -89,17 +112,38 @@ const relacionados = porCategoria(p.categoria).filter((x) => x.slug !== p.slug);
           <p class="chapeu">Cuidados</p>
           <h2 class="titulo" id="t-cuidados">Depois da sessão, <strong>sem surpresas.</strong></h2>
           <ul class="lista">
-            {p.cuidados.map((c) => <li>{c}</li>)}
+            {
+              p.cuidados.map((c) => (
+                <li>
+                  <span class="visto">
+                    <Icone nome="certo" tamanho={15} traco={2} />
+                  </span>
+                  {c}
+                </li>
+              ))
+            }
           </ul>
-          <p class="aviso">Qualquer sinal diferente do esperado, fale com a clínica pelo WhatsApp, sem esperar o retorno.</p>
+          <p class="aviso">
+            <Icone nome="alerta" tamanho={22} />
+            <span>Qualquer sinal diferente do esperado, fale com a clínica pelo WhatsApp, sem esperar o retorno.</span>
+          </p>
         </div>
         <div class="rt">
-          <p class="rotulo">{t.responsavel}</p>
-          <p class="nome">{r.nome}</p>
-          <p class="registro">{t.cargo} · {r.registro}</p>
-          <p class="nota">
-            Procedimentos com finalidade estética, feitos por profissionais habilitados, com produtos registrados na Anvisa e termo de consentimento.
-          </p>
+          <div class="rt-topo">
+            <span class="rt-foto">
+              {foto ? <Image src={foto} alt="" width={72} height={72} densities={[1, 2]} loading="lazy" decoding="async" /> : <Monograma tamanho={30} />}
+            </span>
+            <div>
+              <p class="rotulo">{t.responsavel}</p>
+              <p class="nome">{r.nome}</p>
+              <p class="registro">{t.cargo} · {r.registro}</p>
+            </div>
+          </div>
+          <ul class="rt-garantias">
+            <li><Icone nome="escudo" tamanho={18} />Finalidade estética, por profissional habilitada</li>
+            <li><Icone nome="frasco" tamanho={18} />Produtos com registro na Anvisa</li>
+            <li><Icone nome="prancheta" tamanho={18} />Termo de consentimento antes de começar</li>
+          </ul>
         </div>
       </div>
     </section>
@@ -117,7 +161,7 @@ const relacionados = porCategoria(p.categoria).filter((x) => x.slug !== p.slug);
             <ul class="relacionados">
               {relacionados.map((x) => (
                 <li>
-                  <CartaoProcedimento nome={x.nome} resumo={x.resumo} href={`/procedimentos/${x.slug}/`} />
+                  <CartaoProcedimento nome={x.nome} resumo={x.resumo} href={`/procedimentos/${x.slug}/`} icone={x.icone} />
                 </li>
               ))}
             </ul>
@@ -133,32 +177,6 @@ const relacionados = porCategoria(p.categoria).filter((x) => x.slug !== p.slug);
 </Base>
 
 <style>
-  .faixa-titulo {
-    background: var(--grafite);
-    color: var(--claro);
-    padding: clamp(140px, 16vw, 190px) 0 clamp(64px, 8vw, 96px);
-  }
-  .faixa-titulo .chapeu {
-    color: var(--bronze);
-    gap: 10px;
-  }
-  .faixa-titulo .chapeu a {
-    color: inherit;
-    text-underline-offset: 4px;
-  }
-  .faixa-titulo .titulo {
-    font-size: clamp(38px, 6vw, 72px);
-    font-weight: 200;
-  }
-  .faixa-titulo .titulo strong {
-    color: var(--bronze);
-  }
-  .faixa-titulo .abre {
-    color: var(--claro-2);
-  }
-  .faixa-titulo .acoes {
-    margin-top: 32px;
-  }
   .grade {
     display: grid;
     gap: 48px;
@@ -167,7 +185,7 @@ const relacionados = porCategoria(p.categoria).filter((x) => x.slug !== p.slug);
   @media (min-width: 960px) {
     .grade {
       grid-template-columns: 1.15fr 0.85fr;
-      gap: 88px;
+      gap: 80px;
     }
     .ficha {
       position: sticky;
@@ -188,58 +206,106 @@ const relacionados = porCategoria(p.categoria).filter((x) => x.slug !== p.slug);
     color: var(--tinta);
   }
   .subtitulo {
-    margin-top: 40px;
-    font-size: 19px;
+    margin-top: 44px;
+    font-size: 13px;
+    font-weight: 650;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--bronze-texto);
   }
   .indicacoes {
     list-style: none;
     padding: 0;
-    margin-top: 16px;
+    margin-top: 18px;
     display: grid;
     gap: 12px;
+  }
+  @media (min-width: 600px) {
+    .indicacoes {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
   }
   .indicacoes li {
     display: flex;
-    gap: 12px;
-    align-items: baseline;
+    gap: 14px;
+    align-items: center;
+    padding: 16px 18px;
+    background: var(--branco);
+    border: 1px solid var(--linha);
+    border-radius: 12px;
+    font-weight: 550;
+    line-height: 1.4;
   }
-  .indicacoes :global(svg) {
+  .visto {
     flex: none;
-    color: var(--bronze-texto);
-    translate: 0 3px;
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: var(--grafite);
+    color: var(--bronze-claro);
   }
+
   .ficha {
     background: var(--branco);
     border: 1px solid var(--linha);
-    border-top: 2px solid var(--bronze);
+    border-top: 3px solid var(--bronze);
     border-radius: var(--raio);
-    padding: clamp(26px, 3.4vw, 40px);
+    padding: clamp(26px, 3.4vw, 36px);
+    box-shadow: 0 30px 60px -40px color-mix(in oklab, var(--bronze-texto) 55%, transparent);
   }
   .ficha h3 {
+    display: flex;
+    align-items: center;
+    gap: 12px;
     font-size: 21px;
   }
+  .ficha h3 :global(svg) {
+    color: var(--bronze-texto);
+  }
   .ficha dl {
-    margin-top: 14px;
+    margin-top: 12px;
   }
   .ficha dl div {
+    position: relative;
     display: grid;
-    gap: 4px;
-    padding: 16px 0;
+    gap: 2px;
+    min-height: 76px;
+    padding: 16px 0 16px 58px;
     border-top: 1px solid var(--linha);
   }
   .ficha dl div:first-child {
     border-top: 0;
   }
+  .ficha-icone {
+    position: absolute;
+    left: 0;
+    top: 16px;
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--linho);
+    color: var(--bronze-texto);
+  }
   .ficha dt {
-    font-size: 12px;
+    font-size: 11.5px;
     font-weight: 650;
     letter-spacing: 0.2em;
     text-transform: uppercase;
     color: var(--bronze-texto);
   }
   .ficha dd {
-    font-size: 16.5px;
+    font-size: 16px;
+    line-height: 1.45;
   }
+  .ficha .botao {
+    margin-top: 12px;
+    width: 100%;
+  }
+
   .cuidados {
     display: grid;
     gap: 48px;
@@ -256,60 +322,114 @@ const relacionados = porCategoria(p.categoria).filter((x) => x.slug !== p.slug);
     padding: 0;
     margin-top: 40px;
     display: grid;
-    gap: 16px;
+    gap: 14px;
     max-width: 40em;
   }
   .lista li {
-    position: relative;
-    padding-left: 22px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
     color: var(--claro);
   }
-  .lista li::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 0.72em;
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: var(--bronze);
+  .lista .visto {
+    width: 26px;
+    height: 26px;
+    margin-top: 1px;
+    background: transparent;
+    border: 1px solid color-mix(in oklab, var(--bronze) 60%, transparent);
+    color: var(--bronze);
   }
   .aviso {
-    margin-top: 28px;
-    color: var(--claro-2);
+    margin-top: 32px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    padding: 18px 20px;
+    border-radius: 12px;
+    background: color-mix(in oklab, var(--bronze) 10%, transparent);
+    border: 1px solid color-mix(in oklab, var(--bronze) 28%, transparent);
+    color: var(--claro);
     max-width: 40em;
   }
+  .aviso :global(svg) {
+    flex: none;
+    color: var(--bronze);
+    margin-top: 2px;
+  }
+
   .rt {
+    position: relative;
+    overflow: hidden;
     border: 1px solid color-mix(in oklab, var(--bronze) 40%, transparent);
     border-radius: var(--raio);
-    padding: clamp(26px, 3.4vw, 36px);
+    padding: clamp(26px, 3.4vw, 34px);
+    background: linear-gradient(160deg, var(--grafite-2), var(--grafite) 70%);
+  }
+  .rt-topo {
+    display: flex;
+    gap: 18px;
+    align-items: center;
+  }
+  .rt-foto {
+    flex: none;
     display: grid;
-    gap: 8px;
+    place-items: center;
+    width: 76px;
+    height: 76px;
+    border-radius: 50%;
+    padding: 2px;
+    border: 1px solid var(--bronze);
+    color: var(--bronze);
+    overflow: hidden;
+  }
+  .rt-foto :global(img) {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: 50% 20%;
   }
   .rt .rotulo {
-    font-size: 12px;
+    font-size: 11.5px;
     font-weight: 650;
-    letter-spacing: 0.24em;
+    letter-spacing: 0.22em;
     text-transform: uppercase;
     color: var(--bronze);
   }
   .rt .nome {
-    font-size: 24px;
+    margin-top: 4px;
+    font-size: 22px;
     font-weight: 600;
+    line-height: 1.2;
     color: var(--claro);
   }
   .rt .registro {
+    margin-top: 2px;
     color: var(--bronze-claro);
     font-weight: 600;
-    font-size: 15px;
+    font-size: 14.5px;
   }
-  .rt .nota {
-    margin-top: 12px;
-    padding-top: 16px;
+  .rt-garantias {
+    list-style: none;
+    padding: 20px 0 0;
+    margin-top: 22px;
     border-top: 1px solid color-mix(in oklab, var(--claro) 12%, transparent);
+    display: grid;
+    gap: 12px;
     font-size: 14.5px;
     color: var(--claro-2);
   }
+  .rt-garantias li {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .rt-garantias :global(svg) {
+    flex: none;
+    color: var(--bronze);
+    margin-top: 2px;
+  }
+
   .relacionados {
     list-style: none;
     padding: 0;
@@ -329,5 +449,19 @@ const relacionados = porCategoria(p.categoria).filter((x) => x.slug !== p.slug);
   }
   .relacionados li {
     display: grid;
+    container-type: inline-size;
+  }
+  @media (min-width: 720px) and (max-width: 1079px) {
+    .relacionados li:last-child:nth-child(odd) {
+      grid-column: 1 / -1;
+    }
+  }
+  @media (min-width: 1080px) {
+    .relacionados li:last-child:nth-child(3n + 1) {
+      grid-column: 1 / -1;
+    }
+    .relacionados:has(> li:nth-child(2):last-child) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
   }
 </style>

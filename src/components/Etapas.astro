@@ -1,27 +1,39 @@
 ---
-// Os passos são uma sequência de verdade, por isso levam número.
+// Os passos são uma sequência de verdade, por isso levam número, além do ícone.
+import type { NomeIcone } from "../data/icones.ts";
+import Icone from "./Icone.astro";
+
+interface Etapa {
+  titulo: string;
+  texto: string;
+  icone: NomeIcone;
+}
 interface Props {
-  etapas?: { titulo: string; texto: string }[];
+  etapas?: Etapa[];
   chapeu?: string;
   titulo?: string;
   destaque?: string;
   id?: string;
 }
-const padrao = [
+const padrao: Etapa[] = [
   {
     titulo: "Você chama no WhatsApp",
+    icone: "conversa",
     texto: "Tire suas dúvidas e marque a avaliação. Sem formulário e sem cadastro no site.",
   },
   {
     titulo: "Avaliação individual",
+    icone: "prancheta",
     texto: "Uma conversa reservada sobre o que você espera, seu histórico de saúde e o que é possível no seu caso.",
   },
   {
     titulo: "Aplicação no consultório",
+    icone: "seringa",
     texto: "Com termo de consentimento assinado, anestesia local e ácido hialurônico com registro na Anvisa.",
   },
   {
     titulo: "Acompanhamento",
+    icone: "calendario",
     texto: "Orientações de cuidados para casa e retorno combinado para ver como você está.",
   },
 ];
@@ -42,7 +54,10 @@ const {
       {
         etapas.map((e, i) => (
           <li>
-            <span class="numero">{String(i + 1).padStart(2, "0")}</span>
+            <span class="marca">
+              <Icone nome={e.icone} tamanho={26} traco={1.4} />
+              <span class="numero">{String(i + 1).padStart(2, "0")}</span>
+            </span>
             <h3>{e.titulo}</h3>
             <p>{e.texto}</p>
           </li>
@@ -75,26 +90,71 @@ const {
   li {
     position: relative;
   }
-  .numero {
+  /* No celular, linha do tempo vertical: ícone à esquerda, texto à direita. */
+  @media (max-width: 719px) {
+    .etapas {
+      gap: 28px;
+    }
+    li {
+      display: grid;
+      grid-template-columns: 64px 1fr;
+      column-gap: 20px;
+      align-items: start;
+    }
+    .marca {
+      grid-row: span 2;
+    }
+    li:not(:last-child)::after {
+      content: "";
+      position: absolute;
+      left: 32px;
+      top: 72px;
+      bottom: -24px;
+      width: 1px;
+      background: var(--linha);
+    }
+    h3 {
+      margin-top: 8px;
+    }
+    p {
+      margin-top: 6px;
+    }
+  }
+  .marca {
     display: grid;
     place-items: center;
-    width: 48px;
-    height: 48px;
+    width: 64px;
+    height: 64px;
     border-radius: 50%;
-    border: 1px solid var(--bronze);
-    font-size: 14px;
-    font-weight: 650;
+    border: 1px solid color-mix(in oklab, var(--bronze) 60%, transparent);
     color: var(--bronze-texto);
-    background: var(--branco);
+    background: radial-gradient(circle at 30% 25%, var(--branco), var(--linho));
+    box-shadow: 0 10px 24px -14px color-mix(in oklab, var(--bronze-texto) 60%, transparent);
     position: relative;
     z-index: 1;
+  }
+  .numero {
+    position: absolute;
+    top: -4px;
+    right: -6px;
+    display: grid;
+    place-items: center;
+    min-width: 26px;
+    height: 26px;
+    padding-inline: 5px;
+    border-radius: 999px;
+    background: var(--grafite);
+    color: var(--bronze-claro);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
   }
   @media (min-width: 1080px) {
     li:not(:last-child)::after {
       content: "";
       position: absolute;
-      top: 24px;
-      left: 60px;
+      top: 32px;
+      left: 80px;
       right: -20px;
       height: 1px;
       background: var(--linha);
