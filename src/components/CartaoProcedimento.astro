@@ -1,0 +1,64 @@
+---
+interface Props {
+  nome: string;
+  resumo: string;
+  href: string;
+  /** Cartão menor, sem o resumo (usado na home). */
+  compacto?: boolean;
+}
+const { nome, resumo, href, compacto = false } = Astro.props;
+---
+
+<a class:list={["cartao", { compacto }]} href={href}>
+  <h3>{nome}</h3>
+  {!compacto && <p>{resumo}</p>}
+  <span class="mais">Saiba mais</span>
+</a>
+
+<style>
+  .cartao {
+    display: grid;
+    gap: 12px;
+    align-content: start;
+    padding: 26px 26px 24px;
+    background: var(--branco);
+    border: 1px solid var(--linha);
+    border-radius: var(--raio);
+    text-decoration: none;
+    color: var(--tinta);
+    transition: border-color 0.2s, transform 0.2s;
+    min-width: 0;
+  }
+  .cartao:hover {
+    border-color: var(--bronze);
+  }
+  h3 {
+    font-size: 19px;
+    font-weight: 600;
+  }
+  p {
+    color: var(--tinta-2);
+    font-size: 15.5px;
+  }
+  .mais {
+    margin-top: 4px;
+    font-size: 13px;
+    font-weight: 650;
+    letter-spacing: 0.08em;
+    color: var(--bronze-texto);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    text-decoration-color: color-mix(in oklab, var(--bronze) 50%, transparent);
+  }
+  .compacto {
+    padding: 20px 22px;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+  }
+  .compacto h3 {
+    font-size: 17px;
+  }
+  .compacto .mais {
+    margin-top: 0;
+  }
+</style>

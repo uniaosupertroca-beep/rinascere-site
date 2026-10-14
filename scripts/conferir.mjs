@@ -22,6 +22,9 @@ const PROIBIDAS = [
   [/resultado\s+garantido|garantimos/i, "resultado garantido"],
   [/v[aá]lid[oa]\s+por\s+(?:somente|apenas)|o\s+tempo\s+est[aá]\s+acabando|vagas\s+limitadas|[uú]ltimas\s+vagas/i, "urgência falsa"],
   [/aumento\s+do\s+prazer|desempenho\s+sexual\s+(?:melhor|maior)/i, "promessa sobre função sexual (fora da área do biomédico)"],
+  // Marcas de produtos e aparelhos (art. 11, f). "Botox" só aparece explicado como nome popular, numa dúvida.
+  [/\b(?:ultraformer|lavieen|sculptra|radiesse|ellans[eé]|restylane|juv[eé]derm|dysport|xeomin|coolsculpting)\b/i, "marca de produto ou aparelho"],
+  [/resultado\s+natural|resultados?\s+imediatos?|sem\s+dor\b/i, "promessa de resultado ou de ausência de dor"],
 ];
 
 const erros = [];

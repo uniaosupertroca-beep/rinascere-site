@@ -53,10 +53,14 @@ export const clinica = {
   } as Responsavel,
 };
 
-export const linkWhatsapp = (): string => {
-  const { numero, linkAtual, mensagem } = clinica.whatsapp;
+export const linkWhatsapp = (mensagem: string = clinica.whatsapp.mensagem): string => {
+  const { numero, linkAtual } = clinica.whatsapp;
   return numero ? `https://wa.me/${numero}?text=${encodeURIComponent(mensagem)}` : linkAtual;
 };
+
+/** Mensagem pronta para pedir avaliação de um procedimento específico. */
+export const mensagemPara = (procedimento: string) =>
+  `Olá! Vim pelo site e quero agendar uma avaliação de ${procedimento.toLowerCase()}.`;
 
 /** "(47) 99191-6750", a partir do número do WhatsApp. */
 export const telefoneFormatado = (): string | null => {

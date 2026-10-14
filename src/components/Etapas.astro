@@ -1,6 +1,13 @@
 ---
 // Os passos são uma sequência de verdade, por isso levam número.
-const etapas = [
+interface Props {
+  etapas?: { titulo: string; texto: string }[];
+  chapeu?: string;
+  titulo?: string;
+  destaque?: string;
+  id?: string;
+}
+const padrao = [
   {
     titulo: "Você chama no WhatsApp",
     texto: "Tire suas dúvidas e marque a avaliação. Sem formulário e sem cadastro no site.",
@@ -18,12 +25,19 @@ const etapas = [
     texto: "Orientações de cuidados para casa e retorno combinado para ver como você está.",
   },
 ];
+const {
+  etapas = padrao,
+  chapeu = "Como funciona",
+  titulo = "Do primeiro contato",
+  destaque = "ao retorno.",
+  id = "como-funciona",
+} = Astro.props;
 ---
 
-<section class="secao branca" id="como-funciona" aria-labelledby="t-etapas">
+<section class="secao branca" id={id} aria-labelledby={`t-${id}`}>
   <div class="envolve">
-    <p class="chapeu">Como funciona</p>
-    <h2 class="titulo" id="t-etapas">Do primeiro contato <strong>ao retorno.</strong></h2>
+    <p class="chapeu">{chapeu}</p>
+    <h2 class="titulo" id={`t-${id}`}>{titulo} <strong>{destaque}</strong></h2>
     <ol class="etapas">
       {
         etapas.map((e, i) => (

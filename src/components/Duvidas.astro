@@ -4,7 +4,15 @@
 import { linkWhatsapp } from "../data/clinica.ts";
 import Icone from "./Icone.astro";
 
-const perguntas = [
+interface Props {
+  perguntas?: { p: string; r: string }[];
+  titulo?: string;
+  destaque?: string;
+  /** Mensagem pronta do botão do WhatsApp. */
+  mensagem?: string;
+}
+
+const padrao = [
   {
     p: "É o mesmo que aumento peniano?",
     r: "É assim que muita gente procura. O procedimento feito aqui é estético: trabalha volume e contorno com ácido hialurônico. Mudanças de comprimento ou de função sexual são da área médica, com um urologista.",
@@ -42,15 +50,16 @@ const perguntas = [
     r: "O valor depende do que for definido na avaliação para o seu caso. Chame no WhatsApp para agendar e tirar essa dúvida diretamente com a clínica.",
   },
 ];
+const { perguntas = padrao, titulo = "O que os homens", destaque = "mais perguntam.", mensagem } = Astro.props;
 ---
 
 <section class="secao linho" id="duvidas" aria-labelledby="t-duvidas">
   <div class="envolve grade">
     <div class="lado">
       <p class="chapeu">Dúvidas</p>
-      <h2 class="titulo" id="t-duvidas">O que os homens <strong>mais perguntam.</strong></h2>
+      <h2 class="titulo" id="t-duvidas">{titulo} <strong>{destaque}</strong></h2>
       <p class="abre">Ficou alguma dúvida? Pergunte no WhatsApp. A resposta vem da própria clínica, com discrição.</p>
-      <a class="botao linha" href={linkWhatsapp()} target="_blank" rel="noopener">
+      <a class="botao linha" href={linkWhatsapp(mensagem)} target="_blank" rel="noopener">
         <Icone nome="whatsapp" tamanho={18} />
         Perguntar no WhatsApp
       </a>

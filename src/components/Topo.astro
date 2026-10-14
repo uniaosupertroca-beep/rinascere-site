@@ -8,14 +8,20 @@ interface Props {
   interna?: boolean;
 }
 const { interna = false } = Astro.props;
-const raiz = interna ? "/" : "";
 
-const menu = [
-  { href: "#procedimento", texto: "O procedimento" },
-  { href: "#como-funciona", texto: "Como funciona" },
-  { href: "#duvidas", texto: "Dúvidas" },
-  { href: "#onde-estamos", texto: "Onde estamos" },
-];
+// Na home, o menu leva às seções; nas páginas internas, de volta à home e à lista de procedimentos.
+const menu = interna
+  ? [
+      { href: "/", texto: "Harmonização íntima" },
+      { href: "/procedimentos/", texto: "Procedimentos" },
+      { href: "/#onde-estamos", texto: "Onde estamos" },
+    ]
+  : [
+      { href: "#procedimento", texto: "Harmonização íntima" },
+      { href: "/procedimentos/", texto: "Outros procedimentos" },
+      { href: "#duvidas", texto: "Dúvidas" },
+      { href: "#onde-estamos", texto: "Onde estamos" },
+    ];
 ---
 
 <header class="topo">
@@ -23,7 +29,7 @@ const menu = [
     <a class="inicio" href={interna ? "/" : "#conteudo"} aria-label="Rinascere Aesthetics, início da página"><Marca /></a>
     <nav aria-label="Seções">
       <ul>
-        {menu.map((item) => <li><a href={raiz + item.href}>{item.texto}</a></li>)}
+        {menu.map((item) => <li><a href={item.href}>{item.texto}</a></li>)}
       </ul>
     </nav>
     <a class="botao bronze agendar" href={linkWhatsapp()} target="_blank" rel="noopener">

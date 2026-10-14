@@ -1,0 +1,333 @@
+---
+// Página de cada procedimento, gerada a partir de src/data/procedimentos.ts.
+import CartaoProcedimento from "../../components/CartaoProcedimento.astro";
+import Chamada from "../../components/Chamada.astro";
+import Duvidas from "../../components/Duvidas.astro";
+import Etapas from "../../components/Etapas.astro";
+import Icone from "../../components/Icone.astro";
+import Rodape from "../../components/Rodape.astro";
+import Topo from "../../components/Topo.astro";
+import ZapFlutuante from "../../components/ZapFlutuante.astro";
+import { clinica, linkWhatsapp, mensagemPara, rotulos } from "../../data/clinica.ts";
+import { type Procedimento, porCategoria, procedimentos } from "../../data/procedimentos.ts";
+import Base from "../../layouts/Base.astro";
+
+export function getStaticPaths() {
+  return procedimentos.map((p) => ({ params: { slug: p.slug }, props: { p } }));
+}
+
+interface Props {
+  p: Procedimento;
+}
+
+const { p } = Astro.props;
+const mensagem = mensagemPara(p.nome);
+const r = clinica.responsavel;
+const t = rotulos();
+const relacionados = porCategoria(p.categoria).filter((x) => x.slug !== p.slug);
+---
+
+<Base titulo={`${p.nome} em ${clinica.cidade} (${clinica.uf}) | Rinascere Aesthetics`} descricao={`${p.resumo} Avaliação individual na Rinascere, no centro de ${clinica.cidade} (${clinica.uf}).`}>
+  <Topo interna />
+  <main id="conteudo">
+    <section class="faixa-titulo escura" aria-labelledby="t-nome">
+      <div class="envolve">
+        <p class="chapeu"><a href="/procedimentos/">Procedimentos</a><span aria-hidden="true">·</span>{p.categoria}</p>
+        <h1 class="titulo" id="t-nome">{p.nome}, <strong>{p.destaque}</strong></h1>
+        <p class="abre">{p.resumo}</p>
+        <div class="acoes">
+          <a class="botao zap" href={linkWhatsapp(mensagem)} target="_blank" rel="noopener">
+            <Icone nome="whatsapp" tamanho={20} />
+            Agendar avaliação
+          </a>
+          <a class="botao linha" href="/procedimentos/">Ver todos os procedimentos</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="secao linho" aria-labelledby="t-o-que-e">
+      <div class="envolve grade">
+        <div class="texto">
+          <p class="chapeu">O procedimento</p>
+          <h2 class="titulo" id="t-o-que-e">Como funciona <strong>e para quem.</strong></h2>
+          <div class="corpo">
+            {p.oQueE.map((par, i) => <p class:list={{ destaque: i === 0 }}>{par}</p>)}
+          </div>
+          <h3 class="subtitulo">Costuma ser procurado para</h3>
+          <ul class="indicacoes">
+            {
+              p.indicacoes.map((item) => (
+                <li>
+                  <Icone nome="certo" tamanho={18} />
+                  {item}
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+        <div class="ficha">
+          <h3>Em resumo</h3>
+          <dl>
+            {
+              p.ficha.map((f) => (
+                <div>
+                  <dt>{f.termo}</dt>
+                  <dd>{f.texto}</dd>
+                </div>
+              ))
+            }
+          </dl>
+        </div>
+      </div>
+    </section>
+
+    <Etapas etapas={p.etapas} chapeu="Como é feito" titulo="Da avaliação" destaque="ao retorno." id="como-e-feito" />
+
+    <section class="secao escura" aria-labelledby="t-cuidados">
+      <div class="envolve cuidados">
+        <div>
+          <p class="chapeu">Cuidados</p>
+          <h2 class="titulo" id="t-cuidados">Depois da sessão, <strong>sem surpresas.</strong></h2>
+          <ul class="lista">
+            {p.cuidados.map((c) => <li>{c}</li>)}
+          </ul>
+          <p class="aviso">Qualquer sinal diferente do esperado, fale com a clínica pelo WhatsApp, sem esperar o retorno.</p>
+        </div>
+        <div class="rt">
+          <p class="rotulo">{t.responsavel}</p>
+          <p class="nome">{r.nome}</p>
+          <p class="registro">{t.cargo} · {r.registro}</p>
+          <p class="nota">
+            Procedimentos com finalidade estética, feitos por profissionais habilitados, com produtos registrados na Anvisa e termo de consentimento.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <Duvidas perguntas={p.duvidas} titulo="Dúvidas sobre" destaque={`${p.nome.toLowerCase()}.`} mensagem={mensagem} />
+
+    {
+      relacionados.length > 0 && (
+        <section class="secao branca" aria-labelledby="t-relacionados">
+          <div class="envolve">
+            <p class="chapeu">Veja também</p>
+            <h2 class="titulo" id="t-relacionados">
+              Outros cuidados <strong>para o {p.categoria === "Rosto" ? "rosto" : "corpo"}.</strong>
+            </h2>
+            <ul class="relacionados">
+              {relacionados.map((x) => (
+                <li>
+                  <CartaoProcedimento nome={x.nome} resumo={x.resumo} href={`/procedimentos/${x.slug}/`} />
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      )
+    }
+
+    <Chamada mensagem={mensagem} />
+    <ZapFlutuante mensagem={mensagem} />
+  </main>
+  <Rodape />
+</Base>
+
+<style>
+  .faixa-titulo {
+    background: var(--grafite);
+    color: var(--claro);
+    padding: clamp(140px, 16vw, 190px) 0 clamp(64px, 8vw, 96px);
+  }
+  .faixa-titulo .chapeu {
+    color: var(--bronze);
+    gap: 10px;
+  }
+  .faixa-titulo .chapeu a {
+    color: inherit;
+    text-underline-offset: 4px;
+  }
+  .faixa-titulo .titulo {
+    font-size: clamp(38px, 6vw, 72px);
+    font-weight: 200;
+  }
+  .faixa-titulo .titulo strong {
+    color: var(--bronze);
+  }
+  .faixa-titulo .abre {
+    color: var(--claro-2);
+  }
+  .faixa-titulo .acoes {
+    margin-top: 32px;
+  }
+  .grade {
+    display: grid;
+    gap: 48px;
+    align-items: start;
+  }
+  @media (min-width: 960px) {
+    .grade {
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 88px;
+    }
+    .ficha {
+      position: sticky;
+      top: 32px;
+      margin-top: 64px;
+    }
+  }
+  .corpo {
+    margin-top: 32px;
+    display: grid;
+    gap: 18px;
+    max-width: 38em;
+    color: var(--tinta-2);
+  }
+  .corpo .destaque {
+    font-size: 20px;
+    line-height: 1.55;
+    color: var(--tinta);
+  }
+  .subtitulo {
+    margin-top: 40px;
+    font-size: 19px;
+  }
+  .indicacoes {
+    list-style: none;
+    padding: 0;
+    margin-top: 16px;
+    display: grid;
+    gap: 12px;
+  }
+  .indicacoes li {
+    display: flex;
+    gap: 12px;
+    align-items: baseline;
+  }
+  .indicacoes :global(svg) {
+    flex: none;
+    color: var(--bronze-texto);
+    translate: 0 3px;
+  }
+  .ficha {
+    background: var(--branco);
+    border: 1px solid var(--linha);
+    border-top: 2px solid var(--bronze);
+    border-radius: var(--raio);
+    padding: clamp(26px, 3.4vw, 40px);
+  }
+  .ficha h3 {
+    font-size: 21px;
+  }
+  .ficha dl {
+    margin-top: 14px;
+  }
+  .ficha dl div {
+    display: grid;
+    gap: 4px;
+    padding: 16px 0;
+    border-top: 1px solid var(--linha);
+  }
+  .ficha dl div:first-child {
+    border-top: 0;
+  }
+  .ficha dt {
+    font-size: 12px;
+    font-weight: 650;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--bronze-texto);
+  }
+  .ficha dd {
+    font-size: 16.5px;
+  }
+  .cuidados {
+    display: grid;
+    gap: 48px;
+    align-items: start;
+  }
+  @media (min-width: 960px) {
+    .cuidados {
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 88px;
+    }
+  }
+  .lista {
+    list-style: none;
+    padding: 0;
+    margin-top: 40px;
+    display: grid;
+    gap: 16px;
+    max-width: 40em;
+  }
+  .lista li {
+    position: relative;
+    padding-left: 22px;
+    color: var(--claro);
+  }
+  .lista li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.72em;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--bronze);
+  }
+  .aviso {
+    margin-top: 28px;
+    color: var(--claro-2);
+    max-width: 40em;
+  }
+  .rt {
+    border: 1px solid color-mix(in oklab, var(--bronze) 40%, transparent);
+    border-radius: var(--raio);
+    padding: clamp(26px, 3.4vw, 36px);
+    display: grid;
+    gap: 8px;
+  }
+  .rt .rotulo {
+    font-size: 12px;
+    font-weight: 650;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--bronze);
+  }
+  .rt .nome {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--claro);
+  }
+  .rt .registro {
+    color: var(--bronze-claro);
+    font-weight: 600;
+    font-size: 15px;
+  }
+  .rt .nota {
+    margin-top: 12px;
+    padding-top: 16px;
+    border-top: 1px solid color-mix(in oklab, var(--claro) 12%, transparent);
+    font-size: 14.5px;
+    color: var(--claro-2);
+  }
+  .relacionados {
+    list-style: none;
+    padding: 0;
+    margin-top: 48px;
+    display: grid;
+    gap: 16px;
+  }
+  @media (min-width: 720px) {
+    .relacionados {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (min-width: 1080px) {
+    .relacionados {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+  .relacionados li {
+    display: grid;
+  }
+</style>

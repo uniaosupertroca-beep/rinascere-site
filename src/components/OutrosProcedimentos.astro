@@ -1,0 +1,49 @@
+---
+// Na home (harmonização íntima), a ponte para os outros procedimentos da clínica.
+import { procedimentos } from "../data/procedimentos.ts";
+import CartaoProcedimento from "./CartaoProcedimento.astro";
+---
+
+<section class="secao linho" id="outros-procedimentos" aria-labelledby="t-outros">
+  <div class="envolve">
+    <p class="chapeu">Outros procedimentos</p>
+    <h2 class="titulo" id="t-outros">Cuidados para o rosto <strong>e para o corpo.</strong></h2>
+    <p class="abre">A Rinascere também atende homens e mulheres em procedimentos de estética facial e corporal, sempre a partir de uma avaliação individual.</p>
+    <ul class="grade">
+      {
+        procedimentos.map((p) => (
+          <li>
+            <CartaoProcedimento nome={p.nome} resumo={p.resumo} href={`/procedimentos/${p.slug}/`} compacto />
+          </li>
+        ))
+      }
+    </ul>
+    <a class="botao linha todos" href="/procedimentos/">Ver todos os procedimentos</a>
+  </div>
+</section>
+
+<style>
+  .grade {
+    list-style: none;
+    padding: 0;
+    margin-top: 48px;
+    display: grid;
+    gap: 12px;
+  }
+  @media (min-width: 720px) {
+    .grade {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (min-width: 1080px) {
+    .grade {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+  .grade li {
+    display: grid;
+  }
+  .todos {
+    margin-top: 32px;
+  }
+</style>

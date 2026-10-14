@@ -1,6 +1,7 @@
 import type { APIRoute } from "astro";
+import { procedimentos } from "../data/procedimentos.ts";
 
-const paginas = ["/", "/privacidade/"];
+const paginas = ["/", "/procedimentos/", ...procedimentos.map((p) => `/procedimentos/${p.slug}/`), "/privacidade/"];
 
 export const GET: APIRoute = ({ site }) => {
   const urls = paginas.map((p) => `<url><loc>${new URL(p, site).href}</loc></url>`).join("");

@@ -1,9 +1,14 @@
 ---
 import { linkWhatsapp } from "../data/clinica.ts";
 import Icone from "./Icone.astro";
+
+interface Props {
+  mensagem?: string;
+}
+const { mensagem } = Astro.props;
 ---
 
-<a class="zap-flutuante" href={linkWhatsapp()} target="_blank" rel="noopener" aria-label="Agendar avaliação pelo WhatsApp">
+<a class="zap-flutuante" href={linkWhatsapp(mensagem)} target="_blank" rel="noopener" aria-label="Agendar avaliação pelo WhatsApp">
   <Icone nome="whatsapp" tamanho={26} />
   <span>Agendar avaliação</span>
 </a>

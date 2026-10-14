@@ -1,0 +1,114 @@
+---
+import CartaoProcedimento from "../../components/CartaoProcedimento.astro";
+import Rodape from "../../components/Rodape.astro";
+import Topo from "../../components/Topo.astro";
+import ZapFlutuante from "../../components/ZapFlutuante.astro";
+import { linkWhatsapp } from "../../data/clinica.ts";
+import { categorias, porCategoria } from "../../data/procedimentos.ts";
+import Base from "../../layouts/Base.astro";
+import Icone from "../../components/Icone.astro";
+
+const intimo = {
+  nome: "Harmonização íntima masculina",
+  resumo: "Preenchimento com ácido hialurônico para volume e contorno, com avaliação individual e sigilo do primeiro contato ao retorno.",
+  href: "/",
+};
+---
+
+<Base
+  titulo="Procedimentos estéticos em Itajaí (SC) | Rinascere Aesthetics"
+  descricao="Harmonização íntima masculina, toxina botulínica, harmonização facial, preenchimento labial, bioestimulador de colágeno, fios de PDO, criolipólise e mais, no centro de Itajaí (SC)."
+>
+  <Topo interna />
+  <main id="conteudo">
+    <section class="faixa-titulo escura" aria-labelledby="t-procedimentos">
+      <div class="envolve">
+        <p class="chapeu">Procedimentos</p>
+        <h1 class="titulo" id="t-procedimentos">Cuidados para rosto, <strong>corpo e região íntima.</strong></h1>
+        <p class="abre">Todos começam por uma avaliação individual, com indicação honesta do que faz sentido para você.</p>
+        <div class="acoes">
+          <a class="botao zap" href={linkWhatsapp()} target="_blank" rel="noopener">
+            <Icone nome="whatsapp" tamanho={20} />
+            Agendar avaliação
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="secao linho" aria-labelledby="t-intimo">
+      <div class="envolve">
+        <h2 class="grupo" id="t-intimo">Íntimo masculino</h2>
+        <ul class="grade">
+          <li><CartaoProcedimento {...intimo} /></li>
+        </ul>
+        {
+          categorias.map((c) => (
+            <>
+              <h2 class="grupo" id={`t-${c.toLowerCase()}`}>{c}</h2>
+              <ul class="grade">
+                {porCategoria(c).map((p) => (
+                  <li>
+                    <CartaoProcedimento nome={p.nome} resumo={p.resumo} href={`/procedimentos/${p.slug}/`} />
+                  </li>
+                ))}
+              </ul>
+            </>
+          ))
+        }
+      </div>
+    </section>
+    <ZapFlutuante />
+  </main>
+  <Rodape />
+</Base>
+
+<style>
+  .faixa-titulo {
+    background: var(--grafite);
+    color: var(--claro);
+    padding: clamp(140px, 16vw, 190px) 0 clamp(64px, 8vw, 96px);
+  }
+  .faixa-titulo .chapeu,
+  .faixa-titulo .titulo strong {
+    color: var(--bronze);
+  }
+  .faixa-titulo .abre {
+    color: var(--claro-2);
+  }
+  .faixa-titulo .acoes {
+    margin-top: 32px;
+  }
+  .grupo {
+    margin-top: 56px;
+    font-size: 13px;
+    font-weight: 650;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--bronze-texto);
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--linha);
+  }
+  .grupo:first-child {
+    margin-top: 0;
+  }
+  .grade {
+    list-style: none;
+    padding: 0;
+    margin-top: 20px;
+    display: grid;
+    gap: 16px;
+  }
+  @media (min-width: 720px) {
+    .grade {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (min-width: 1080px) {
+    .grade {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+  .grade li {
+    display: grid;
+  }
+</style>

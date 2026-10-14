@@ -32,6 +32,24 @@ O `npm run build` **barra a publicação** se alguma dessas frases voltar (`scri
 
 > Atenção para a clínica: em fev/2026 o TRF1 anulou a Resolução CFBM 241/2014, que trata da estética biomédica. O CFBM recorreu e diz que as outras resoluções seguem valendo. Já a Sociedade Brasileira de Urologia considera o preenchimento peniano ato médico. Vale a clínica confirmar a situação com um advogado.
 
+## Procedimentos (site completo)
+
+Além da página principal (harmonização íntima masculina), cada procedimento da fachada tem a sua página em `/procedimentos/<nome>/`, todas geradas a partir de **`src/data/procedimentos.ts`**:
+
+- **Rosto:** toxina botulínica, harmonização facial, preenchimento labial, bioestimulador de colágeno, fios de PDO, ultrassom microfocado, laser de túlio.
+- **Corpo:** criolipólise, harmonização de glúteo.
+
+Cada página tem: o que é, para que costuma ser procurado, resumo, passo a passo, cuidados, responsável técnica, dúvidas e botão de WhatsApp com a mensagem já citando o procedimento. A lista completa fica em `/procedimentos/`, e a home tem a seção "Outros procedimentos".
+
+Para criar uma página nova, é só acrescentar um item em `procedimentos.ts`: a página, o cartão na lista e o sitemap saem sozinhos.
+
+**Antes de divulgar:** a responsável técnica deve revisar o texto de cada página (indicações, durações médias e cuidados). Os textos não citam marcas de produtos nem de aparelhos (Ultraformer, Lavieen etc.), como manda o art. 11 do Código de Ética do biomédico, e a conferência do build barra essas marcas.
+
+**Ficaram de fora até a confirmação da responsável técnica:**
+- **Enzimas para gordura localizada:** confirmar que o produto tem registro na Anvisa para esse uso.
+- **Endolaser e endolifting:** confirmar que estão dentro da habilitação do biomédico esteta.
+- **Emagrecimento:** pode envolver medicamentos, que só o médico prescreve. Se for só com procedimentos estéticos, dá para criar a página.
+
 ## Dados da clínica
 
 Tudo fica em **`src/data/clinica.ts`**. O build avisa se faltar algo.

@@ -1,6 +1,11 @@
 ---
 import { linkWhatsapp } from "../data/clinica.ts";
 import Icone from "./Icone.astro";
+
+interface Props {
+  mensagem?: string;
+}
+const { mensagem } = Astro.props;
 import Monograma from "./Monograma.astro";
 ---
 
@@ -9,7 +14,7 @@ import Monograma from "./Monograma.astro";
     <span class="selo"><Monograma tamanho={30} /></span>
     <h2 id="t-chamada">Dê o primeiro passo <strong>com discrição.</strong></h2>
     <p>A conversa começa no WhatsApp e fica entre você e a clínica. Sem compromisso: a avaliação existe para você decidir com calma.</p>
-    <a class="botao zap" href={linkWhatsapp()} target="_blank" rel="noopener">
+    <a class="botao zap" href={linkWhatsapp(mensagem)} target="_blank" rel="noopener">
       <Icone nome="whatsapp" tamanho={20} />
       Agendar avaliação
     </a>
