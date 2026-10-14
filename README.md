@@ -34,15 +34,15 @@ O `npm run build` **barra a publicação** se alguma dessas frases voltar (`scri
 
 ## O que a clínica ainda precisa mandar
 
-Enquanto não chegam, o site mostra espaços marcados "a preencher", e o build lista o que falta.
+Enquanto não chegam, o site mostra espaços marcados ou textos neutros, e o build lista o que falta.
 
-- [ ] **Biomédica ou biomédico**, **nome** e **registro no CRBM** (ex.: `CRBM-5 nº 12345`). São obrigatórios antes de divulgar o site.
-- [ ] **Foto do(a) responsável técnico(a)**: retrato vertical. Salve em `public/fotos/responsavel.jpg` (cerca de 800×1000 px).
-- [ ] **Texto curto sobre o(a) profissional**: formação, experiência, jeito de atender.
-- [ ] **Número do WhatsApp** com DDD. Com ele, o botão já abre com a mensagem "Vim pelo site e quero agendar uma avaliação". Hoje usa o link `wa.link/97w9s4`.
+- [x] **Profissional:** Bruna Zaccarias, biomédica esteta, CRBM 9292 (publicado pela clínica no Instagram, set/2026).
+- [ ] **Confirmar se ela é a responsável técnica.** Se for, mude `responsavelTecnico` para `true` em `src/data/clinica.ts` e o site passa a dizer "Responsável técnica". Se não for, mande o nome e o CRBM do responsável técnico, que o CFBM exige na divulgação. Confirme também a região do CRBM (ex.: CRBM-5).
+- [ ] **Foto da Bruna**: retrato vertical. Salve em `public/fotos/` e preencha `responsavel.foto`. Hoje aparece um cartão com as iniciais.
+- [ ] **Número do WhatsApp** com DDD. Com ele, o botão já abre com a mensagem pronta. Hoje usa o link `wa.link/97w9s4` (o Linktree da clínica usa `wa.link/0cnpo5`; confirmar qual é o atual).
 - [ ] **Horários de atendimento.**
-- [ ] **Logo em SVG ou PNG** (opcional). Hoje o nome é escrito em Raleway, no desenho do logo atual.
-- [ ] **Conferir com o(a) responsável técnico(a)** os textos de cuidados (24 h sem academia, 72 h sem esforço nas pernas, sinais de alerta) e das dúvidas.
+- [ ] **Fotos originais** (as do site atual são pequenas, cerca de 500 px).
+- [ ] **Conferir com a profissional** os textos de cuidados (24 h sem academia, 72 h sem esforço nas pernas, sinais de alerta) e das dúvidas.
 
 Tudo isso se preenche em um lugar só: **`src/data/clinica.ts`**.
 

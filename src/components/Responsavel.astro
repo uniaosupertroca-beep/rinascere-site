@@ -6,6 +6,13 @@ import Monograma from "./Monograma.astro";
 
 const r = clinica.responsavel;
 const t = rotulos();
+// Sem foto, o retrato vira um cartão com as iniciais, no desenho da marca.
+const iniciais = r.nome
+  ?.split(/\s+/)
+  .filter((p) => p.length > 2)
+  .map((p) => p[0])
+  .slice(0, 2)
+  .join("");
 ---
 
 <section class="secao linho" id="responsavel" aria-labelledby="t-responsavel">
@@ -13,11 +20,11 @@ const t = rotulos();
     <figure class="retrato">
       {
         r.foto ? (
-          <img src={r.foto} alt={`${r.nome ? `${r.nome}, ` : ""}${t.responsavel.toLowerCase()} da Rinascere`} width="800" height="1000" loading="lazy" decoding="async" />
+          <img src={r.foto} alt={`${r.nome ?? "Profissional"}, ${t.cargo.toLowerCase()} da Rinascere`} width="800" height="1000" loading="lazy" decoding="async" />
         ) : (
-          <div class="sem-foto">
-            <Monograma tamanho={72} />
-            <span class="preencher">Foto: {t.responsavel.toLowerCase()}</span>
+          <div class="sem-foto" aria-hidden="true">
+            {iniciais ? <span class="iniciais">{iniciais}</span> : <Monograma tamanho={72} />}
+            <span class="assina">{r.nome ?? "Rinascere"}</span>
           </div>
         )
       }
@@ -89,8 +96,19 @@ const t = rotulos();
     padding: 24px;
     text-align: center;
   }
-  .sem-foto .preencher {
-    font-size: 14px;
+  .iniciais {
+    font-size: clamp(88px, 12vw, 140px);
+    font-weight: 200;
+    letter-spacing: 0.04em;
+    line-height: 1;
+    color: transparent;
+    -webkit-text-stroke: 1px var(--bronze);
+  }
+  .assina {
+    font-size: 12px;
+    font-weight: 650;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
     color: var(--bronze-claro);
   }
   .registro {

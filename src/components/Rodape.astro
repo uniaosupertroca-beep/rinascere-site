@@ -28,7 +28,7 @@ const ano = new Date().getFullYear();
         <li>{enderecoCompleto}</li>
         <li>CNPJ {clinica.cnpj}</li>
         <li>
-          {t.responsavel}: {r.nome ?? <span class="preencher">nome</span>}, {t.cargo.toLowerCase()}, {
+          {t.rodape}: {r.nome ?? <span class="preencher">nome</span>}, {t.ehResponsavelTecnico && `${t.cargo.toLowerCase()}, `}{
             r.registro ?? <span class="preencher">CRBM nº</span>
           }
         </li>

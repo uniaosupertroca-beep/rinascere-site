@@ -5,6 +5,8 @@
 export interface Responsavel {
   /** true para biomédica, false para biomédico. Enquanto null, o site usa "biomédico(a)". */
   feminino: boolean | null;
+  /** true quando a clínica confirmar que é a responsável técnica (o CFBM exige o nome do RT na divulgação). */
+  responsavelTecnico: boolean | null;
   /** Nome como deve aparecer no site. */
   nome: string | null;
   /** Ex.: "CRBM-5 nº 12345". Obrigatório pelas regras de publicidade do biomédico. */
@@ -39,11 +41,14 @@ export const clinica = {
     facebook: "https://www.facebook.com/rinascere.clinicaestetica/",
     youtube: "https://www.youtube.com/@RinascereAesthetics",
   },
+  // Dados publicados pela própria clínica no Instagram (@clinica.rinascere, posts de set/2026).
   responsavel: {
-    feminino: null,
-    nome: null,
-    registro: null,
-    sobre: null,
+    feminino: true,
+    responsavelTecnico: null,
+    nome: "Bruna Zaccarias",
+    registro: "CRBM 9292",
+    sobre:
+      "Dedicada à harmonização íntima masculina, integra o corpo clínico da Rinascere. Atende com avaliação individual, transparência sobre cada etapa do procedimento e sigilo do primeiro contato ao retorno.",
     foto: null,
   } as Responsavel,
 };
@@ -62,8 +67,12 @@ export const linkRotaWaze = `https://waze.com/ul?q=${destino}&navigate=yes`;
 /** Palavras que mudam se quem responde pela clínica é biomédica ou biomédico. */
 export function rotulos(r: Responsavel = clinica.responsavel) {
   const f = (feminino: string, masculino: string, neutro: string) => (r.feminino === null ? neutro : r.feminino ? feminino : masculino);
+  const rt = r.responsavelTecnico === true;
   return {
-    responsavel: f("Responsável técnica", "Responsável técnico", "Responsável técnico(a)"),
+    responsavel: rt ? f("Responsável técnica", "Responsável técnico", "Responsável técnico(a)") : "Quem cuida de você",
+    /** Rodapé: "Responsável técnica" quando confirmado; senão, o cargo ("Biomédica esteta"). */
+    rodape: rt ? f("Responsável técnica", "Responsável técnico", "Responsável técnico(a)") : f("Biomédica esteta", "Biomédico esteta", "Biomédico(a) esteta"),
+    ehResponsavelTecnico: rt,
     cargo: f("Biomédica esteta", "Biomédico esteta", "Biomédico(a) esteta"),
     habilitado: f("habilitada", "habilitado", "habilitado(a)"),
     nomeVazio: f("Nome da biomédica", "Nome do biomédico", "Nome do(a) biomédico(a)"),
@@ -74,6 +83,7 @@ export function rotulos(r: Responsavel = clinica.responsavel) {
 export function pendencias(): string[] {
   const falta: string[] = [];
   const r = clinica.responsavel;
+  if (r.responsavelTecnico !== true) falta.push("Confirmar se a profissional é a responsável técnica da clínica (responsavel.responsavelTecnico)");
   if (r.feminino === null) falta.push("Se quem responde pela clínica é biomédica ou biomédico (responsavel.feminino)");
   if (!r.nome) falta.push("Nome do(a) responsável técnico(a) (responsavel.nome)");
   if (!r.registro) falta.push("Registro no conselho, ex.: CRBM-5 nº 12345 (responsavel.registro)");
