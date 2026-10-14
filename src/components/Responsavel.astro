@@ -1,11 +1,16 @@
 ---
 // Nome e registro no conselho de quem é responsável técnico: obrigatórios na publicidade do biomédico.
 // Enquanto a clínica não informar, o site mostra o espaço marcado "a preencher".
+import type { ImageMetadata } from "astro";
+import { Image } from "astro:assets";
 import { clinica, rotulos } from "../data/clinica.ts";
 import Monograma from "./Monograma.astro";
 
 const r = clinica.responsavel;
 const t = rotulos();
+const fotos = import.meta.glob<{ default: ImageMetadata }>("../assets/fotos/*.{jpg,jpeg,png,webp}", { eager: true });
+const foto = r.foto ? fotos[`../assets/fotos/${r.foto}`]?.default : undefined;
+if (r.foto && !foto) throw new Error(`Foto não encontrada em src/assets/fotos/: ${r.foto}`);
 // Sem foto, o retrato vira um cartão com as iniciais, no desenho da marca.
 const iniciais = r.nome
   ?.split(/\s+/)
@@ -19,8 +24,8 @@ const iniciais = r.nome
   <div class="envolve grade">
     <figure class="retrato">
       {
-        r.foto ? (
-          <img src={r.foto} alt={`${r.nome ?? "Profissional"}, ${t.cargo.toLowerCase()} da Rinascere`} width="800" height="1000" loading="lazy" decoding="async" />
+        foto ? (
+          <Image src={foto} alt={`${r.nome ?? "Profissional"}, ${t.cargo.toLowerCase()} da Rinascere`} widths={[440, 640]} sizes="(min-width: 900px) 440px, 100vw" loading="lazy" decoding="async" />
         ) : (
           <div class="sem-foto" aria-hidden="true">
             {iniciais ? <span class="iniciais">{iniciais}</span> : <Monograma tamanho={72} />}
@@ -77,11 +82,12 @@ const iniciais = r.nome
     border-radius: var(--raio);
     z-index: 0;
   }
-  .retrato img,
+  .retrato :global(img),
   .sem-foto {
     position: relative;
     z-index: 1;
     width: 100%;
+    height: auto;
     aspect-ratio: 4 / 5;
     object-fit: cover;
     border-radius: var(--raio);

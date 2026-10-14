@@ -13,7 +13,7 @@ export interface Responsavel {
   registro: string | null;
   /** Uma ou duas frases sobre a formação e a experiência, em primeira pessoa ou terceira. */
   sobre: string | null;
-  /** Arquivo em public/fotos/ (ex.: "/fotos/responsavel.jpg"), retrato vertical 4:5. */
+  /** Arquivo em src/assets/fotos/ (ex.: "bruna-zaccarias.jpg"), retrato vertical 4:5. */
   foto: string | null;
 }
 
@@ -45,11 +45,11 @@ export const clinica = {
   responsavel: {
     feminino: true,
     responsavelTecnico: true,
-    nome: "Bruna Zaccarias",
+    nome: "Bruna M. Zaccarias",
     registro: "CRBM 9292",
     sobre:
       "Dedicada à harmonização íntima masculina, integra o corpo clínico da Rinascere. Atende com avaliação individual, transparência sobre cada etapa do procedimento e sigilo do primeiro contato ao retorno.",
-    foto: null,
+    foto: "bruna-zaccarias.jpg",
   } as Responsavel,
 };
 
@@ -88,7 +88,7 @@ export function pendencias(): string[] {
   if (!r.nome) falta.push("Nome do(a) responsável técnico(a) (responsavel.nome)");
   if (!r.registro) falta.push("Registro no conselho, ex.: CRBM-5 nº 12345 (responsavel.registro)");
   if (!r.sobre) falta.push("Texto sobre o(a) responsável técnico(a) (responsavel.sobre)");
-  if (!r.foto) falta.push("Foto do(a) responsável técnico(a) em public/fotos/ (responsavel.foto)");
+  if (!r.foto) falta.push("Foto do(a) responsável técnico(a) em src/assets/fotos/ (responsavel.foto)");
   if (!clinica.horarios) falta.push("Horários de atendimento (horarios)");
   if (!clinica.whatsapp.numero) falta.push("Número do WhatsApp com DDD, para a mensagem pronta (whatsapp.numero)");
   return falta;

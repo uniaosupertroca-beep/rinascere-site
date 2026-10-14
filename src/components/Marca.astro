@@ -1,45 +1,23 @@
 ---
-// Assinatura da clínica em texto, no desenho do logo atual (Rinascere fino + "aesthetics" espaçado).
-// Quando a clínica mandar o logo em SVG, ele pode entrar aqui no lugar do texto.
+// Logo oficial da Rinascere (perfil + nome), em dourado sobre fundo transparente.
+// Recortado do perfil do Instagram da clínica (src/assets/logo-rinascere.png).
+import { Image } from "astro:assets";
+import logo from "../assets/logo-rinascere.png";
+
 interface Props {
-  tom?: "claro" | "escuro";
+  /** Altura do logo na tela, em pixels. */
+  altura?: number;
 }
-const { tom = "claro" } = Astro.props;
+const { altura = 40 } = Astro.props;
+const largura = Math.round((logo.width / logo.height) * altura);
 ---
 
-<span class:list={["marca", tom]}>
-  <span class="nome">Rinascere</span>
-  <span class="sub">aesthetics</span>
-</span>
+<Image src={logo} alt="Rinascere Aesthetics" width={largura} height={altura} densities={[1, 2, 3]} loading="eager" decoding="async" class="marca" />
 
 <style>
   .marca {
-    display: inline-grid;
-    justify-items: end;
-    align-content: start;
-    line-height: 1;
-  }
-  .nome {
-    font-size: 25px;
-    font-weight: 300;
-    letter-spacing: 0.01em;
-  }
-  .sub {
-    margin-top: 3px;
-    font-size: 9.5px;
-    font-weight: 600;
-    letter-spacing: 0.42em;
-    margin-right: -0.42em;
-    text-transform: lowercase;
-    color: var(--bronze-texto);
-  }
-  .claro .nome {
-    color: var(--claro);
-  }
-  .claro .sub {
-    color: var(--bronze);
-  }
-  .escuro .nome {
-    color: var(--tinta);
+    display: block;
+    width: auto;
+    max-width: 100%;
   }
 </style>
